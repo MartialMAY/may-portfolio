@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin | Portfolio</title>
+    <title>Dashboard | Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Admin Panel</h1>
         <div class="flex items-center gap-6">
             <span class="text-xs font-bold uppercase tracking-widest text-gray-400"><?php echo $_SESSION['admin']; ?></span>
-            <a href="<?php echo $this->base; ?>/logout" class="text-red-500 hover:text-red-700 transition-colors">
+            <a href="<?php echo url('/logout'); ?>" class="text-red-500 hover:text-red-700 transition-colors">
                 <i data-feather="log-out" class="w-5 h-5"></i>
             </a>
         </div>
@@ -29,26 +29,32 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-100 h-[calc(100vh-80px)] fixed left-0 overflow-y-auto p-6 space-y-2">
             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 block">Navigation</span>
-            <a href="<?php echo $this->base; ?>/admin" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin'); ?>" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="home" class="w-4 h-4"></i> Dashboard
+            </a>
+            <a href="<?php echo url('/admin/bts'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="grid" class="w-4 h-4"></i> BTS SIO (E4)
             </a>
-            <a href="<?php echo $this->base; ?>/admin/projects" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/projects'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="layers" class="w-4 h-4"></i> Projets
             </a>
-            <a href="<?php echo $this->base; ?>/admin/veille" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/veille'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="eye" class="w-4 h-4"></i> Veille Tech
             </a>
-            <a href="<?php echo $this->base; ?>/admin/timeline" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/timeline'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="calendar" class="w-4 h-4"></i> Parcours
             </a>
-            <a href="<?php echo $this->base; ?>/admin/cv" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/cv'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="file-text" class="w-4 h-4"></i> Mon CV
             </a>
-            <a href="<?php echo $this->base; ?>/admin/messages" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/messages'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="mail" class="w-4 h-4"></i> Messages
             </a>
+            <a href="<?php echo url('/admin/logs'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="activity" class="w-4 h-4"></i> Journal (Logs)
+            </a>
             <div class="pt-6">
-                <a href="<?php echo $this->base; ?>/" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
+                <a href="<?php echo url('/'); ?>" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
                     <i data-feather="external-link" class="w-4 h-4"></i> Voir le site
                 </a>
             </div>
@@ -56,59 +62,97 @@
 
         <!-- Main Content -->
         <main class="flex-1 ml-64 p-12">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
-                    <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Tableau BTS SIO</h2>
-                </div>
-                <a href="<?php echo $this->base; ?>/admin/bts/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
-                    <i data-feather="plus" class="w-4 h-4"></i>
-                    Ajouter une réalisation
-                </a>
+            <div class="mb-12">
+                <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Statistiques</span>
+                <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Bienvenue, <?php echo $_SESSION['admin']; ?></h2>
             </div>
 
-            <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-gray-50 border-b border-gray-100">
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Titre</th>
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Période</th>
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Type</th>
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Compétences</th>
-                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50 text-sm">
-                        <?php foreach ($realisations as $real): ?>
-                            <tr class="hover:bg-gray-50/50 transition-colors">
-                                <td class="p-6 font-bold"><?php echo htmlspecialchars($real['title']); ?></td>
-                                <td class="p-6 text-gray-500 uppercase text-[10px]"><?php echo htmlspecialchars($real['periode']); ?></td>
-                                <td class="p-6">
-                                    <span class="px-3 py-1 bg-gray-100 rounded-full text-[9px] font-bold uppercase tracking-widest">
-                                        <?php echo $real['type']; ?>
-                                    </span>
-                                </td>
-                                <td class="p-6">
-                                    <div class="flex gap-1">
-                                        <span class="w-5 h-5 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 text-[10px] font-bold">
-                                            <?php echo count($real['competence_ids']); ?>
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="p-6 text-right">
-                                    <div class="flex justify-end gap-4">
-                                        <a href="<?php echo $this->base; ?>/admin/bts/edit?id=<?php echo $real['id']; ?>" class="p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
-                                            <i data-feather="edit-2" class="w-4 h-4"></i>
-                                        </a>
-                                        <a href="<?php echo $this->base; ?>/admin/bts/delete?id=<?php echo $real['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-100 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
-                                            <i data-feather="trash-2" class="w-4 h-4"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-feather="layers"></i>
+                    </div>
+                    <span class="text-3xl font-bold display-title block mb-1"><?php echo $stats['projects_count']; ?></span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Projets publics</span>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-feather="mail"></i>
+                    </div>
+                    <span class="text-3xl font-bold display-title block mb-1"><?php echo $stats['messages_count']; ?></span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Messages reçus</span>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-feather="eye"></i>
+                    </div>
+                    <span class="text-3xl font-bold display-title block mb-1"><?php echo $stats['veille_count']; ?></span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Articles Veille</span>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div class="w-12 h-12 <?php echo $stats['security_alerts'] > 0 ? 'bg-red-50 text-red-600' : 'bg-gray-50 text-gray-400'; ?> rounded-2xl flex items-center justify-center mb-6">
+                        <i data-feather="shield"></i>
+                    </div>
+                    <span class="text-3xl font-bold display-title block mb-1"><?php echo $stats['security_alerts']; ?></span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Alertes Sécurité</span>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Recent Activity -->
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="display-title text-xl font-bold uppercase tracking-tight">Activité Récente</h3>
+                        <a href="<?php echo url('/admin/logs'); ?>" class="text-[10px] font-bold text-blue-600 uppercase tracking-widest hover:underline">Voir tout</a>
+                    </div>
+                    <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
+                        <div class="divide-y divide-gray-50">
+                            <?php foreach ($recentLogs as $log): ?>
+                            <div class="p-6 flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center flex-shrink-0">
+                                    <i data-feather="activity" class="w-4 h-4 text-gray-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-800"><?php echo htmlspecialchars($log['action']); ?></p>
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-1">
+                                        <?php echo date('d/m H:i', strtotime($log['created_at'])); ?> • <?php echo $log['module']; ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Last Messages -->
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="display-title text-xl font-bold uppercase tracking-tight">Derniers Messages</h3>
+                        <a href="<?php echo url('/admin/messages'); ?>" class="text-[10px] font-bold text-blue-600 uppercase tracking-widest hover:underline">Voir tout</a>
+                    </div>
+                    <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
+                        <div class="divide-y divide-gray-50">
+                            <?php if (empty($recentMessages)): ?>
+                                <div class="p-12 text-center text-gray-400 italic text-sm">Aucun message.</div>
+                            <?php endif; ?>
+                            <?php foreach ($recentMessages as $msg): ?>
+                            <div class="p-6 flex items-start gap-4">
+                                <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                    <i data-feather="mail" class="w-4 h-4 text-blue-600"></i>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-bold text-gray-800 truncate"><?php echo htmlspecialchars($msg['name']); ?></p>
+                                    <p class="text-xs text-gray-500 truncate"><?php echo htmlspecialchars($msg['message']); ?></p>
+                                    <p class="text-[10px] text-gray-400 uppercase tracking-widest mt-1">
+                                        <?php echo date('d/m', strtotime($msg['created_at'])); ?>
+                                    </p>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

@@ -15,11 +15,12 @@
 <body class="bg-[#f8f8f8]">
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Edition Parcours</h1>
-        <a href="<?php echo $this->base; ?>/admin/timeline" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
+        <a href="<?php echo url('/admin/timeline'); ?>" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
     </nav>
 
     <main class="pt-32 pb-20 px-8 max-w-4xl mx-auto">
         <form method="POST" class="space-y-12">
+            <?php echo \App\Core\Security::csrfField(); ?>
             <input type="hidden" name="id" value="<?php echo $item['id'] ?? ''; ?>">
             
             <div class="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-12 shadow-sm space-y-8">

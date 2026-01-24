@@ -21,7 +21,7 @@
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Admin Panel</h1>
         <div class="flex items-center gap-6">
             <span class="text-xs font-bold uppercase tracking-widest text-gray-400"><?php echo $_SESSION['admin']; ?></span>
-            <a href="logout" class="text-red-500 hover:text-red-700 transition-colors">
+            <a href="<?php echo url('/logout'); ?>" class="text-red-500 hover:text-red-700 transition-colors">
                 <i data-feather="log-out" class="w-5 h-5"></i>
             </a>
         </div>
@@ -31,26 +31,32 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-100 h-[calc(100vh-80px)] fixed left-0 overflow-y-auto p-6 space-y-2">
             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 block">Navigation</span>
-            <a href="<?php echo $this->base; ?>/admin" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="home" class="w-4 h-4"></i> Dashboard
+            </a>
+            <a href="<?php echo url('/admin/bts'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="grid" class="w-4 h-4"></i> BTS SIO (E4)
             </a>
-            <a href="<?php echo $this->base; ?>/admin/projects" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/projects'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="layers" class="w-4 h-4"></i> Projets
             </a>
-            <a href="<?php echo $this->base; ?>/admin/veille" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/veille'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="eye" class="w-4 h-4"></i> Veille Tech
             </a>
-            <a href="<?php echo $this->base; ?>/admin/timeline" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/timeline'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="calendar" class="w-4 h-4"></i> Parcours
             </a>
-            <a href="<?php echo $this->base; ?>/admin/cv" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/cv'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="file-text" class="w-4 h-4"></i> Mon CV
             </a>
-            <a href="<?php echo $this->base; ?>/admin/messages" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/messages'); ?>" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="mail" class="w-4 h-4"></i> Messages
             </a>
+            <a href="<?php echo url('/admin/logs'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="activity" class="w-4 h-4"></i> Journal (Logs)
+            </a>
             <div class="pt-6">
-                <a href="<?php echo $this->base; ?>/" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
+                <a href="<?php echo url('/'); ?>" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
                     <i data-feather="external-link" class="w-4 h-4"></i> Voir le site
                 </a>
             </div>
@@ -120,7 +126,7 @@
                                             <button onclick="openReplyModal(<?php echo htmlspecialchars(json_encode(htmlspecialchars_decode($msg['email']))); ?>, <?php echo htmlspecialchars(json_encode(htmlspecialchars_decode($msg['name']))); ?>)" class="p-2 bg-blue-50 rounded-full hover:bg-blue-600 hover:text-white transition-all text-blue-600" title="Répondre">
                                                 <i data-feather="message-circle" class="w-4 h-4"></i>
                                             </button>
-                                            <a href="<?php echo $this->base; ?>/admin/messages/delete?id=<?php echo $msg['id']; ?>" onclick="return confirm('Supprimer ce message ?')" class="p-2 bg-gray-50 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500" title="Supprimer">
+                                            <a href="<?php echo url('/admin/messages/delete?id=' . $msg['id']); ?>" onclick="return confirm('Supprimer ce message ?')" class="p-2 bg-gray-50 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500" title="Supprimer">
                                                 <i data-feather="trash-2" class="w-4 h-4"></i>
                                             </a>
                                         </div>
@@ -169,7 +175,8 @@
                     <h3 class="display-title text-3xl font-extrabold uppercase tracking-tighter">Répondre à <span id="replyToName">Contact</span></h3>
                 </div>
 
-                <form action="<?php echo $this->base; ?>/admin/messages/reply" method="POST" class="space-y-6">
+                <form action="<?php echo url('/admin/messages/reply'); ?>" method="POST" class="space-y-6">
+                    <?php echo \App\Core\Security::csrfField(); ?>
                     <input type="hidden" name="email" id="replyToEmail">
                     
                     <div class="space-y-2">

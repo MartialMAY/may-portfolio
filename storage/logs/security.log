@@ -1,0 +1,7 @@
+[2026-01-24 16:22:41] IP: ::1 | User: admin | Action: DELETE_MESSAGE | Module: MESSAGES | Details: ID: 2
+[2026-01-24 16:34:07] IP: ::1 | User: admin | Action: LOGOUT | Module: AUTH | Details: User logged out
+[2026-01-24 16:34:24] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-01-24 17:13:50] IP: ::1 | User: admin | Action: CONTACT_MESSAGE_SENT | Module: CONTACT | Details: From: john (john@gmail.com)
+[2026-01-24 17:24:58] IP: ::1 | User: admin | Action: CONTACT_MESSAGE_SENT | Module: CONTACT | Details: From: momo (momo@gmail.com)
+[2026-01-24 18:03:42] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/messages
+[2026-01-24 18:03:53] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in

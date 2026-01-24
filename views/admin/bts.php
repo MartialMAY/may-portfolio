@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion Projets | Admin</title>
+    <title>BTS SIO E4 | Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -32,10 +32,10 @@
             <a href="<?php echo url('/admin'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="home" class="w-4 h-4"></i> Dashboard
             </a>
-            <a href="<?php echo url('/admin/bts'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/bts'); ?>" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="grid" class="w-4 h-4"></i> BTS SIO (E4)
             </a>
-            <a href="<?php echo url('/admin/projects'); ?>" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo url('/admin/projects'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="layers" class="w-4 h-4"></i> Projets
             </a>
             <a href="<?php echo url('/admin/veille'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
@@ -65,33 +65,56 @@
             <div class="flex justify-between items-end mb-12">
                 <div>
                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
-                    <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Mes Projets</h2>
+                    <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Tableau BTS SIO</h2>
                 </div>
-                <a href="<?php echo $this->base; ?>/admin/projects/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
-                    <i data-feather="plus" class="w-4 h-4"></i> Ajouter un projet
+                <a href="<?php echo $this->base; ?>/admin/bts/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+                    <i data-feather="plus" class="w-4 h-4"></i>
+                    Ajouter une réalisation
                 </a>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <?php foreach ($projects as $proj): ?>
-                    <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm group">
-                        <div class="h-48 overflow-hidden bg-gray-100">
-                            <img src="<?php echo url($proj['image_url']); ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        </div>
-                        <div class="p-8">
-                            <span class="text-[9px] font-bold uppercase tracking-widest text-blue-600 block mb-2"><?php echo $proj['category']; ?></span>
-                            <h3 class="display-title text-xl font-bold mb-4"><?php echo htmlspecialchars($proj['title']); ?></h3>
-                            <div class="flex gap-4 pt-4 border-t border-gray-50">
-                                <a href="<?php echo url('/admin/projects/edit?id='); ?><?php echo $proj['id']; ?>" class="flex-1 flex justify-center p-3 bg-gray-50 rounded-xl hover:bg-black hover:text-white transition-all">
-                                    <i data-feather="edit-2" class="w-4 h-4"></i>
-                                </a>
-                                <a href="<?php echo url('/admin/projects/delete?id=' . $proj['id']); ?>" onclick="return confirm('Supprimer ce projet ?')" class="flex-1 flex justify-center p-3 bg-gray-50 rounded-xl hover:bg-red-500 hover:text-white transition-all text-red-500">
-                                    <i data-feather="trash-2" class="w-4 h-4"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+            <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100">
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Titre</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Période</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Type</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Compétences</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50 text-sm">
+                        <?php foreach ($realisations as $real): ?>
+                            <tr class="hover:bg-gray-50/50 transition-colors">
+                                <td class="p-6 font-bold"><?php echo htmlspecialchars($real['title']); ?></td>
+                                <td class="p-6 text-gray-500 uppercase text-[10px]"><?php echo htmlspecialchars($real['periode']); ?></td>
+                                <td class="p-6">
+                                    <span class="px-3 py-1 bg-gray-100 rounded-full text-[9px] font-bold uppercase tracking-widest">
+                                        <?php echo $real['type']; ?>
+                                    </span>
+                                </td>
+                                <td class="p-6">
+                                    <div class="flex gap-1">
+                                        <span class="w-5 h-5 rounded-full flex items-center justify-center bg-blue-100 text-blue-600 text-[10px] font-bold">
+                                            <?php echo count($real['competence_ids']); ?>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="p-6 text-right">
+                                    <div class="flex justify-end gap-4">
+                                        <a href="<?php echo $this->base; ?>/admin/bts/edit?id=<?php echo $real['id']; ?>" class="p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
+                                            <i data-feather="edit-2" class="w-4 h-4"></i>
+                                        </a>
+                                        <a href="<?php echo $this->base; ?>/admin/bts/delete?id=<?php echo $real['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-100 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
+                                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
         </main>
     </div>

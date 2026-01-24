@@ -21,14 +21,17 @@
             </div>
         <?php endif; ?>
 
-        <form method="POST" class="space-y-6">
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Nom d'utilisateur</label>
-                <input type="text" name="username" required class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
-            </div>
-            <div>
-                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Mot de passe</label>
-                <input type="password" name="password" required class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
+        <form method="POST" class="space-y-8">
+            <?php echo \App\Core\Security::csrfField(); ?>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Nom d'utilisateur</label>
+                    <input type="text" name="username" required class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Mot de passe</label>
+                    <input type="password" name="password" required class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
+                </div>
             </div>
             <button type="submit" class="w-full p-4 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors uppercase tracking-widest text-xs">
                 Se connecter

@@ -15,7 +15,7 @@
 <body class="bg-[#f8f8f8]">
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Sources RSS</h1>
-        <a href="<?php echo $this->base; ?>/admin/veille" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour à la veille</a>
+        <a href="<?php echo url('/admin/veille'); ?>" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour à la veille</a>
     </nav>
 
     <main class="pt-32 pb-20 px-8 max-w-4xl mx-auto">
@@ -23,6 +23,7 @@
         <div class="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-12 shadow-sm mb-12">
             <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-6 block">Ajouter une Source</span>
             <form method="POST" class="space-y-6">
+                <?php echo \App\Core\Security::csrfField(); ?>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="space-y-2">
                         <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Nom de la source</label>
@@ -58,7 +59,7 @@
                                 <button onclick="copyToClipboard('<?php echo $source['url']; ?>')" class="p-3 bg-gray-50 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-all" title="Copier l'URL">
                                     <i data-feather="copy" class="w-4 h-4"></i>
                                 </button>
-                                <a href="/testportfolio/admin/veille/sources/delete?id=<?php echo $source['id']; ?>" onclick="return confirm('Supprimer cette source ?')" class="p-3 bg-gray-50 rounded-xl hover:bg-red-50 hover:text-white transition-all text-red-500">
+                                <a href="<?php echo url('/admin/veille/sources/delete?id=' . $source['id']); ?>" onclick="return confirm('Supprimer cette source ?')" class="p-3 bg-gray-50 rounded-xl hover:bg-red-50 hover:text-white transition-all text-red-500">
                                     <i data-feather="trash-2" class="w-4 h-4"></i>
                                 </a>
                             </div>

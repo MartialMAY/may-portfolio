@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Si le fichier ou le dossier existe, le servir directement
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Sinon, envoyer tout vers index.php (Front Controller)
+RewriteRule ^(.*)$ index.php [QSA,L]

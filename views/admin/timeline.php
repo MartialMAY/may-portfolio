@@ -10,66 +10,110 @@
     <style>
         body { font-family: 'Inter', sans-serif; }
         .display-title { font-family: 'Space Grotesk', sans-serif; }
+        .sidebar-link.active { background: black; color: white; }
     </style>
 </head>
 <body class="bg-[#f8f8f8]">
+    <!-- Navbar -->
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
-        <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Parcours</h1>
-        <a href="<?php echo $this->base; ?>/admin" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
-    </nav>
-
-    <main class="pt-32 pb-20 px-8 max-w-6xl mx-auto">
-        <div class="flex justify-between items-end mb-12">
-            <div>
-                <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
-                <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Expériences & Formations</h2>
-            </div>
-            <a href="<?php echo $this->base; ?>/admin/timeline/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
-                <i data-feather="plus" class="w-4 h-4"></i> Ajouter une étape
+        <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Admin Panel</h1>
+        <div class="flex items-center gap-6">
+            <span class="text-xs font-bold uppercase tracking-widest text-gray-400"><?php echo $_SESSION['admin']; ?></span>
+            <a href="<?php echo url('/logout'); ?>" class="text-red-500 hover:text-red-700 transition-colors">
+                <i data-feather="log-out" class="w-5 h-5"></i>
             </a>
         </div>
+    </nav>
 
-        <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
-            <table class="w-full text-left">
-                <thead>
-                    <tr class="bg-gray-50 border-b border-gray-100">
-                        <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Période</th>
-                        <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Titre / Organisation</th>
-                        <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Catégorie</th>
-                        <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-50 text-sm">
-                    <?php if (empty($items)): ?>
-                        <tr>
-                            <td colspan="4" class="p-12 text-center text-gray-400 italic">Aucune donnée enregistrée</td>
+    <div class="flex pt-20">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white border-r border-gray-100 h-[calc(100vh-80px)] fixed left-0 overflow-y-auto p-6 space-y-2">
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 block">Navigation</span>
+            <a href="<?php echo url('/admin'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="home" class="w-4 h-4"></i> Dashboard
+            </a>
+            <a href="<?php echo url('/admin/bts'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="grid" class="w-4 h-4"></i> BTS SIO (E4)
+            </a>
+            <a href="<?php echo url('/admin/projects'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="layers" class="w-4 h-4"></i> Projets
+            </a>
+            <a href="<?php echo url('/admin/veille'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="eye" class="w-4 h-4"></i> Veille Tech
+            </a>
+            <a href="<?php echo url('/admin/timeline'); ?>" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="calendar" class="w-4 h-4"></i> Parcours
+            </a>
+            <a href="<?php echo url('/admin/cv'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="file-text" class="w-4 h-4"></i> Mon CV
+            </a>
+            <a href="<?php echo url('/admin/messages'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="mail" class="w-4 h-4"></i> Messages
+            </a>
+            <a href="<?php echo url('/admin/logs'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="activity" class="w-4 h-4"></i> Journal (Logs)
+            </a>
+            <div class="pt-6">
+                <a href="<?php echo url('/'); ?>" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
+                    <i data-feather="external-link" class="w-4 h-4"></i> Voir le site
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 ml-64 p-12">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
+                    <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Expériences & Formations</h2>
+                </div>
+                <a href="<?php echo url('/admin/timeline/add'); ?>" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+                    <i data-feather="plus" class="w-4 h-4"></i> Ajouter une étape
+                </a>
+            </div>
+
+            <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-gray-50 border-b border-gray-100">
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Période</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Titre / Organisation</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400">Catégorie</th>
+                            <th class="p-6 text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right">Actions</th>
                         </tr>
-                    <?php else: ?>
-                        <?php foreach ($items as $item): ?>
-                            <tr class="hover:bg-gray-50/50 transition-colors">
-                                <td class="p-6 font-bold whitespace-nowrap"><?php echo htmlspecialchars($item['period']); ?></td>
-                                <td class="p-6">
-                                    <div class="font-bold text-gray-900"><?php echo htmlspecialchars($item['title']); ?></div>
-                                    <div class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mt-1"><?php echo htmlspecialchars($item['organization']); ?></div>
-                                </td>
-                                <td class="p-6 capitalize text-xs font-medium text-gray-500"><?php echo $item['category']; ?></td>
-                                <td class="p-6 text-right">
-                                    <div class="flex justify-end gap-3">
-                                        <a href="<?php echo $this->base; ?>/admin/timeline/edit?id=<?php echo $item['id']; ?>" class="p-2 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all">
-                                            <i data-feather="edit-2" class="w-4 h-4"></i>
-                                        </a>
-                                        <a href="<?php echo $this->base; ?>/admin/timeline/delete?id=<?php echo $item['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-50 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
-                                            <i data-feather="trash-2" class="w-4 h-4"></i>
-                                        </a>
-                                    </div>
-                                </td>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50 text-sm">
+                        <?php if (empty($items)): ?>
+                            <tr>
+                                <td colspan="4" class="p-12 text-center text-gray-400 italic">Aucune donnée enregistrée</td>
                             </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </main>
+                        <?php else: ?>
+                            <?php foreach ($items as $item): ?>
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                    <td class="p-6 font-bold whitespace-nowrap"><?php echo htmlspecialchars($item['period']); ?></td>
+                                    <td class="p-6">
+                                        <div class="font-bold text-gray-900"><?php echo htmlspecialchars($item['title']); ?></div>
+                                        <div class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mt-1"><?php echo htmlspecialchars($item['organization']); ?></div>
+                                    </td>
+                                    <td class="p-6 capitalize text-xs font-medium text-gray-500"><?php echo $item['category']; ?></td>
+                                    <td class="p-6 text-right">
+                                        <div class="flex justify-end gap-3">
+                                            <a href="<?php echo url('/admin/timeline/edit?id=' . $item['id']); ?>" class="p-2 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all">
+                                                <i data-feather="edit-2" class="w-4 h-4"></i>
+                                            </a>
+                                            <a href="<?php echo url('/admin/timeline/delete?id=' . $item['id']); ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-50 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
+                                                <i data-feather="trash-2" class="w-4 h-4"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
 
     <script>
         feather.replace();
