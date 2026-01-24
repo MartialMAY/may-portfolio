@@ -7,16 +7,20 @@ use Models\VeilleModel;
 use Models\VeilleSourceModel;
 use Models\TimelineModel;
 use Models\BtsModel;
+use Models\MessageModel;
+use Services\EmailService;
 
 class AdminController {
     private $db;
+    private $base;
 
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+        $this->base = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
         if (!isset($_SESSION['admin'])) {
-            header('Location: /testportfolio/login');
+            header('Location: ' . $this->base . '/login');
             exit();
         }
         $database = new Database();
@@ -44,7 +48,7 @@ class AdminController {
                 'display_order' => $_POST['display_order'] ?? 0
             ];
             if ($btsModel->save($data, $_POST['competences'] ?? [])) {
-                header('Location: /testportfolio/admin');
+                header('Location: ' . $this->base . '/admin');
                 exit();
             }
         }
@@ -57,7 +61,7 @@ class AdminController {
         if ($id) {
             (new BtsModel($this->db))->delete($id);
         }
-        header('Location: /testportfolio/admin');
+        header('Location: ' . $this->base . '/admin');
         exit();
     }
 
@@ -85,7 +89,7 @@ class AdminController {
             }
 
             if ($model->save($data)) {
-                header('Location: /testportfolio/admin/projects');
+                header('Location: ' . $this->base . '/admin/projects');
                 exit();
             }
         }
@@ -95,7 +99,7 @@ class AdminController {
     public function project_delete() {
         $id = $_GET['id'] ?? null;
         if ($id) (new ProjectModel($this->db))->delete($id);
-        header('Location: /testportfolio/admin/projects');
+        header('Location: ' . $this->base . '/admin/projects');
         exit();
     }
 
@@ -122,7 +126,7 @@ class AdminController {
             }
 
             if ($model->save($data)) {
-                header('Location: /testportfolio/admin/veille');
+                header('Location: ' . $this->base . '/admin/veille');
                 exit();
             }
         }
@@ -132,7 +136,7 @@ class AdminController {
     public function veille_delete() {
         $id = $_GET['id'] ?? null;
         if ($id) (new VeilleModel($this->db))->delete($id);
-        header('Location: /testportfolio/admin/veille');
+        header('Location: ' . $this->base . '/admin/veille');
         exit();
     }
 
@@ -160,7 +164,7 @@ class AdminController {
                     ];
                     if ($model->save($item)) $importedCount++;
                 }
-                header("Location: /testportfolio/admin/veille?imported=$importedCount");
+                header("Location: " . $this->base . "/admin/veille?imported=$importedCount");
                 exit();
             } else {
                 // Handle Fetch
@@ -204,7 +208,7 @@ class AdminController {
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($model->save($_POST)) {
-                header('Location: /testportfolio/admin/veille/sources');
+                header('Location: ' . $this->base . '/admin/veille/sources');
                 exit();
             }
         }
@@ -233,7 +237,7 @@ class AdminController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($model->save($_POST)) {
-                header('Location: /testportfolio/admin/timeline');
+                header('Location: ' . $this->base . '/admin/timeline');
                 exit();
             }
         }
@@ -243,7 +247,7 @@ class AdminController {
     public function timeline_delete() {
         $id = $_GET['id'] ?? null;
         if ($id) (new TimelineModel($this->db))->delete($id);
-        header('Location: /testportfolio/admin/timeline');
+        header('Location: ' . $this->base . '/admin/timeline');
         exit();
     }
 
@@ -259,5 +263,41 @@ class AdminController {
             $success = "CV mis à jour !";
         }
         require_once 'views/admin/cv.php';
+    }
+
+    // --- MESSAGES ---
+    public function messages() {
+        $messages = (new MessageModel($this->db))->getAll();
+        require_once 'views/admin/messages.php';
+    }
+
+    public function delete_message() {
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            $query = "DELETE FROM messages WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+        }
+        header('Location: ' . $this->base . '/admin/messages');
+        exit();
+    }
+
+    public function reply() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userEmail = $_POST['email'] ?? '';
+            $subject = $_POST['subject'] ?? 'Réponse à votre message';
+            $message = $_POST['message'] ?? '';
+
+            if (!empty($userEmail) && !empty($message)) {
+                $emailService = new EmailService();
+                $emailService->sendReply($userEmail, $subject, $message);
+                
+                header('Location: ' . $this->base . '/admin/messages?replied=1');
+                exit();
+            }
+        }
+        header('Location: ' . $this->base . '/admin/messages?error=1');
+        exit();
     }
 }

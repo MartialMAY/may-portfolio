@@ -19,7 +19,7 @@
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Admin Panel</h1>
         <div class="flex items-center gap-6">
             <span class="text-xs font-bold uppercase tracking-widest text-gray-400"><?php echo $_SESSION['admin']; ?></span>
-            <a href="/testportfolio/logout" class="text-red-500 hover:text-red-700 transition-colors">
+            <a href="<?php echo $this->base; ?>/logout" class="text-red-500 hover:text-red-700 transition-colors">
                 <i data-feather="log-out" class="w-5 h-5"></i>
             </a>
         </div>
@@ -29,23 +29,26 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-white border-r border-gray-100 h-[calc(100vh-80px)] fixed left-0 overflow-y-auto p-6 space-y-2">
             <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 block">Navigation</span>
-            <a href="/testportfolio/admin" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo $this->base; ?>/admin" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="grid" class="w-4 h-4"></i> BTS SIO (E4)
             </a>
-            <a href="/testportfolio/admin/projects" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo $this->base; ?>/admin/projects" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="layers" class="w-4 h-4"></i> Projets
             </a>
-            <a href="/testportfolio/admin/veille" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo $this->base; ?>/admin/veille" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="eye" class="w-4 h-4"></i> Veille Tech
             </a>
-            <a href="/testportfolio/admin/timeline" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo $this->base; ?>/admin/timeline" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="calendar" class="w-4 h-4"></i> Parcours
             </a>
-            <a href="/testportfolio/admin/cv" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+            <a href="<?php echo $this->base; ?>/admin/cv" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="file-text" class="w-4 h-4"></i> Mon CV
             </a>
+            <a href="<?php echo $this->base; ?>/admin/messages" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="mail" class="w-4 h-4"></i> Messages
+            </a>
             <div class="pt-6">
-                <a href="/testportfolio/" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
+                <a href="<?php echo $this->base; ?>/" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
                     <i data-feather="external-link" class="w-4 h-4"></i> Voir le site
                 </a>
             </div>
@@ -58,7 +61,7 @@
                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
                     <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Tableau BTS SIO</h2>
                 </div>
-                <a href="/testportfolio/admin/bts/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+                <a href="<?php echo $this->base; ?>/admin/bts/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
                     <i data-feather="plus" class="w-4 h-4"></i>
                     Ajouter une réalisation
                 </a>
@@ -94,10 +97,10 @@
                                 </td>
                                 <td class="p-6 text-right">
                                     <div class="flex justify-end gap-4">
-                                        <a href="/testportfolio/admin/bts/edit?id=<?php echo $real['id']; ?>" class="p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
+                                        <a href="<?php echo $this->base; ?>/admin/bts/edit?id=<?php echo $real['id']; ?>" class="p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
                                             <i data-feather="edit-2" class="w-4 h-4"></i>
                                         </a>
-                                        <a href="/testportfolio/admin/bts/delete?id=<?php echo $real['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-100 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
+                                        <a href="<?php echo $this->base; ?>/admin/bts/delete?id=<?php echo $real['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-100 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
                                             <i data-feather="trash-2" class="w-4 h-4"></i>
                                         </a>
                                     </div>

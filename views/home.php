@@ -542,22 +542,23 @@
               </div>
 
               <div class="lg:col-span-8">
-                <form class="space-y-12">
+                <form id="contact-form" class="space-y-12">
                   <div class="grid md:grid-cols-2 gap-12">
                     <div class="space-y-4">
                       <label class="label-caps text-gray-500">Nom complet</label>
-                      <input required type="text" class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-blue-400 transition-colors text-xl font-light" placeholder="John Doe" />
+                      <input required name="name" type="text" class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-blue-400 transition-colors text-xl font-light" placeholder="John Doe" />
                     </div>
                     <div class="space-y-4">
                       <label class="label-caps text-gray-500">Email professionnel</label>
-                      <input required type="email" class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-blue-400 transition-colors text-xl font-light" placeholder="john@company.com" />
+                      <input required name="email" type="email" class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-blue-400 transition-colors text-xl font-light" placeholder="john@company.com" />
                     </div>
                   </div>
                   <div class="space-y-4">
                     <label class="label-caps text-gray-500">Votre message</label>
-                    <textarea required rows="4" class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-blue-400 transition-colors text-xl font-light resize-none" placeholder="Décrivez votre projet..."></textarea>
+                    <textarea required name="message" rows="4" class="w-full bg-transparent border-b border-white/20 py-4 outline-none focus:border-blue-400 transition-colors text-xl font-light resize-none" placeholder="Décrivez votre projet..."></textarea>
                   </div>
-                  <button type="submit" class="w-full md:w-auto px-16 py-6 bg-white text-black rounded-full label-caps hover:bg-blue-500 hover:text-white transition-all font-bold">
+                  <div id="contact-feedback" class="hidden p-4 rounded-xl text-sm font-bold uppercase tracking-widest"></div>
+                  <button type="submit" id="contact-submit" class="w-full md:w-auto px-16 py-6 bg-white text-black rounded-full label-caps hover:bg-blue-500 hover:text-white transition-all font-bold">
                     Envoyer la demande
                   </button>
                 </form>
@@ -787,5 +788,75 @@
   </div>
 
   <script src="assets/js/main.js?v=1.0.1"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const contactForm = document.getElementById('contact-form');
+      const feedback = document.getElementById('contact-feedback');
+      const submitBtn = document.getElementById('contact-submit');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          // Disable button
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Envoi en cours...';
+          feedback.classList.add('hidden');
+
+          const formData = new FormData(contactForm);
+
+          try {
+            console.log("Tentative d'envoi...");
+
+            // 1. Enregistrement local (Admin Panel)
+            const localPromise = fetch('contact', {
+              method: 'POST',
+              body: formData
+            }).then(r => r.text());
+
+            // 2. Notification Mail (Formspree)
+            // Utilisation directe de votre email pour forcer l'envoi
+            const formspreePromise = fetch('https://formspree.io/f/mjgyayjo', {
+              method: 'POST',
+              body: formData,
+              headers: { 'Accept': 'application/json' }
+            }).then(r => r.json());
+
+            // On lance les deux et on récupère les résultats
+            const [localRaw, formspreeResult] = await Promise.all([localPromise, formspreePromise]);
+            
+            console.log("Local Response:", localRaw);
+            console.log("Formspree Response:", formspreeResult);
+
+            let localResult;
+            try {
+              localResult = JSON.parse(localRaw);
+            } catch (e) {
+              console.error("Erreur Parse JSON:", localRaw);
+              throw new Error("Erreur serveur : " + localRaw.substring(0, 50));
+            }
+
+            feedback.classList.remove('hidden');
+            if (localResult.success) {
+              feedback.textContent = "Message envoyé et enregistré (Vérifiez vos mails/spams) !";
+              feedback.className = 'p-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-green-500/20 text-green-400 mt-6';
+              contactForm.reset();
+            } else {
+              feedback.textContent = localResult.message;
+              feedback.className = 'p-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-red-500/20 text-red-400 mt-6';
+            }
+          } catch (error) {
+            console.error("Fetch Error:", error);
+            feedback.classList.remove('hidden');
+            feedback.textContent = "Erreur de connexion : " + error.message;
+            feedback.className = 'p-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-red-500/20 text-red-400 mt-6';
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Envoyer la demande';
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

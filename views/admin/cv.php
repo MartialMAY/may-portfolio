@@ -15,7 +15,7 @@
 <body class="bg-[#f8f8f8]">
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Mon CV</h1>
-        <a href="/testportfolio/admin" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
+        <a href="<?php echo $this->base; ?>/admin" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
     </nav>
 
     <main class="pt-32 pb-20 px-8 max-w-4xl mx-auto">
@@ -75,7 +75,7 @@
                     <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-tight">Les fichiers seront renommés automatiquement</p>
                 </div>
             </div>
-            <a href="/testportfolio/assets/CV_Martial_MAYAMOU.pdf" target="_blank" class="px-6 py-3 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-gray-200 transition-all">Vérifier le PDF</a>
+            <a href="<?php echo $this->base; ?>/assets/CV_Martial_MAYAMOU.pdf" target="_blank" class="px-6 py-3 bg-white text-black text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-gray-200 transition-all">Vérifier le PDF</a>
         </div>
     </main>
 

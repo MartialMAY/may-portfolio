@@ -15,7 +15,7 @@
 <body class="bg-[#f8f8f8]">
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Parcours</h1>
-        <a href="/testportfolio/admin" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
+        <a href="<?php echo $this->base; ?>/admin" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
     </nav>
 
     <main class="pt-32 pb-20 px-8 max-w-6xl mx-auto">
@@ -24,7 +24,7 @@
                 <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
                 <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Expériences & Formations</h2>
             </div>
-            <a href="/testportfolio/admin/timeline/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+            <a href="<?php echo $this->base; ?>/admin/timeline/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
                 <i data-feather="plus" class="w-4 h-4"></i> Ajouter une étape
             </a>
         </div>
@@ -55,10 +55,10 @@
                                 <td class="p-6 capitalize text-xs font-medium text-gray-500"><?php echo $item['category']; ?></td>
                                 <td class="p-6 text-right">
                                     <div class="flex justify-end gap-3">
-                                        <a href="/testportfolio/admin/timeline/edit?id=<?php echo $item['id']; ?>" class="p-2 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all">
+                                        <a href="<?php echo $this->base; ?>/admin/timeline/edit?id=<?php echo $item['id']; ?>" class="p-2 bg-gray-50 rounded-full hover:bg-black hover:text-white transition-all">
                                             <i data-feather="edit-2" class="w-4 h-4"></i>
                                         </a>
-                                        <a href="/testportfolio/admin/timeline/delete?id=<?php echo $item['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-50 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
+                                        <a href="<?php echo $this->base; ?>/admin/timeline/delete?id=<?php echo $item['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-50 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
                                             <i data-feather="trash-2" class="w-4 h-4"></i>
                                         </a>
                                     </div>

@@ -10,8 +10,10 @@ class AuthController {
             session_start();
         }
 
+        $base = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
+
         if (isset($_SESSION['admin'])) {
-            header('Location: /testportfolio/admin');
+            header('Location: ' . $base . '/admin');
             exit();
         }
 
@@ -28,7 +30,7 @@ class AuthController {
             if ($user) {
                 $_SESSION['admin'] = $user['username'];
                 $_SESSION['admin_id'] = $user['id'];
-                header('Location: /testportfolio/admin');
+                header('Location: ' . $base . '/admin');
                 exit();
             } else {
                 $error = "Identifiants invalides.";
@@ -42,8 +44,9 @@ class AuthController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
+        $base = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
         session_destroy();
-        header('Location: /testportfolio/login');
+        header('Location: ' . $base . '/login');
         exit();
     }
 }

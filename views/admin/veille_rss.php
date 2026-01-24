@@ -15,13 +15,13 @@
 <body class="bg-[#f8f8f8]">
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Import RSS</h1>
-        <a href="/testportfolio/admin/veille" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour à la veille</a>
+        <a href="<?php echo $this->base; ?>/admin/veille" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour à la veille</a>
     </nav>
 
     <main class="pt-32 pb-20 px-8 max-w-6xl mx-auto">
         <div class="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-12 shadow-sm mb-12 relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4">
-                <a href="/testportfolio/admin/veille/sources" class="text-[9px] font-bold uppercase tracking-widest text-blue-600 hover:text-black flex items-center gap-2">
+                <a href="<?php echo $this->base; ?>/admin/veille/sources" class="text-[9px] font-bold uppercase tracking-widest text-blue-600 hover:text-black flex items-center gap-2">
                     <i data-feather="settings" class="w-3 h-3"></i> Gérer mes sources
                 </a>
             </div>

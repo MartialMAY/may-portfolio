@@ -10,8 +10,11 @@ class Router {
 
     public function run() {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        // Basic routing for local dev (handling subdirectory if needed)
-        $basePath = '/testportfolio'; // Adjust based on local server setup
+        
+        // Dynamic base path detection (handles subdirectories automatically)
+        $scriptName = $_SERVER['SCRIPT_NAME'];
+        $basePath = str_replace('/index.php', '', $scriptName);
+        
         if (strpos($path, $basePath) === 0) {
             $path = substr($path, strlen($basePath));
         }

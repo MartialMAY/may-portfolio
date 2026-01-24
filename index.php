@@ -17,6 +17,7 @@ use Router\Router;
 use Controllers\HomeController;
 use Controllers\AuthController;
 use Controllers\AdminController;
+use Controllers\ContactController;
 
 $router = new Router();
 
@@ -126,6 +127,28 @@ $router->add('/admin/timeline/delete', function() {
 $router->add('/admin/cv', function() {
     $controller = new AdminController();
     $controller->cv();
+});
+
+// Contact Submission
+$router->add('/contact', function() {
+    $controller = new ContactController();
+    $controller->submit();
+});
+
+// Admin Messages
+$router->add('/admin/messages', function() {
+    $controller = new AdminController();
+    $controller->messages();
+});
+
+$router->add('/admin/messages/delete', function() {
+    $controller = new AdminController();
+    $controller->delete_message();
+});
+
+$router->add('/admin/messages/reply', function() {
+    $controller = new AdminController();
+    $controller->reply();
 });
 
 $router->run();

@@ -15,7 +15,7 @@
 <body class="bg-[#f8f8f8]">
     <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center fixed top-0 w-full z-50">
         <h1 class="display-title text-2xl font-bold uppercase tracking-tighter">Edition Projet</h1>
-        <a href="/testportfolio/admin/projects" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
+        <a href="<?php echo $this->base; ?>/admin/projects" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-black">Retour au dashboard</a>
     </nav>
 
     <main class="pt-32 pb-20 px-8 max-w-4xl mx-auto">
@@ -51,7 +51,7 @@
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Image du projet</label>
                             <?php if (isset($project['image_url'])): ?>
                                 <div class="mb-4 h-32 w-48 rounded-xl overflow-hidden border border-gray-100">
-                                    <img src="/testportfolio/<?php echo $project['image_url']; ?>" class="w-full h-full object-cover">
+                                    <img src="<?php echo $this->base; ?>/<?php echo $project['image_url']; ?>" class="w-full h-full object-cover">
                                 </div>
                             <?php endif; ?>
                             <input type="file" name="image" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
