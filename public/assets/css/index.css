@@ -107,7 +107,189 @@ body {
 
 [data-lenis-prevent] {
   overscroll-behavior: contain;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
+[data-lenis-prevent]::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
+#project-modal .modal-container {
+  max-width: 90vw;
+  width: 1400px;
+}
+
+#project-modal .project-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 1024px) {
+  #project-modal .project-grid {
+    grid-template-columns: 360px 1fr;
+    gap: 5rem;
+    align-items: stretch;
+  }
+}
+
+.carousel-container {
+  width: 100%;
+}
+
+.carousel-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 2.5rem;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  height: 100%;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carousel-nav.static {
+  position: static;
+}
+
+.carousel-dots.static {
+  position: static;
+}
+
+.carousel-btn {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.carousel-btn:hover {
+  background: black;
+  color: white;
+  transform: translateY(-2px);
+  border-color: black;
+}
+
+
+/* Floating Navigation */
+.carousel-overlay-nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+.carousel-btn-floating {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.carousel-btn-floating:hover {
+  background: #000;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.carousel-top-actions {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  z-index: 10;
+}
+
+.carousel-btn-zoom {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.carousel-btn-zoom:hover {
+  background: black;
+  color: white;
+  transform: scale(1.1);
+}
+
+.carousel-counter {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 2rem;
+  color: black;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Zoom state */
+.carousel-viewport.is-zoomed {
+  cursor: zoom-out;
+}
+
+.carousel-viewport.is-zoomed .carousel-overlay-nav,
+.carousel-viewport.is-zoomed .carousel-counter {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+.carousel-viewport img {
+  transition: transform 0.1s ease-out, transform-origin 0.1s ease-out;
+}
+
+.carousel-viewport:not(.is-zoomed) {
+  cursor: zoom-in;
+}
+
 
 /* Custom Cursor */
 .custom-cursor {

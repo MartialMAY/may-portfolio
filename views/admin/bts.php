@@ -67,7 +67,7 @@
                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
                     <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Tableau BTS SIO</h2>
                 </div>
-                <a href="<?php echo $this->base; ?>/admin/bts/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+                <a href="<?php echo url('/admin/bts/add'); ?>" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
                     <i data-feather="plus" class="w-4 h-4"></i>
                     Ajouter une réalisation
                 </a>
@@ -103,10 +103,10 @@
                                 </td>
                                 <td class="p-6 text-right">
                                     <div class="flex justify-end gap-4">
-                                        <a href="<?php echo $this->base; ?>/admin/bts/edit?id=<?php echo $real['id']; ?>" class="p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
+                                        <a href="<?php echo url('/admin/bts/edit?id=' . $real['id']); ?>" class="p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-all">
                                             <i data-feather="edit-2" class="w-4 h-4"></i>
                                         </a>
-                                        <a href="<?php echo $this->base; ?>/admin/bts/delete?id=<?php echo $real['id']; ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-100 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
+                                        <a href="<?php echo url('/admin/bts/delete?id=' . $real['id']); ?>" onclick="return confirm('Supprimer ?')" class="p-2 bg-gray-100 rounded-full hover:bg-red-500 hover:text-white transition-all text-red-500">
                                             <i data-feather="trash-2" class="w-4 h-4"></i>
                                         </a>
                                     </div>

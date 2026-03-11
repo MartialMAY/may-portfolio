@@ -98,26 +98,39 @@ class AdminController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = $_POST;
             
-            // Handle Image Upload with Service
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-                $uploadService = new UploadService('uploads/projects');
-                $result = $uploadService->upload($_FILES['image']);
-                
-                if ($result['success']) {
-                    $data['image_url'] = 'uploads/projects/' . $result['path'];
-                } else {
-                    $error = $result['message'];
-                }
-            } elseif ($project) {
-                $data['image_url'] = $project['image_url'];
-            }
-
-            if (!isset($error) && $model->save($data)) {
+            if ($model->save($data)) {
                 $this->logger->log($id ? 'UPDATE_PROJECT' : 'CREATE_PROJECT', 'PROJECTS', "Title: " . $data['title']);
                 \App\Core\ViewHelper::redirect('/admin/projects');
             }
         }
         require_once __DIR__ . '/../../views/admin/project_edit.php';
+    }
+
+    public function upload_ajax() {
+        header('Content-Type: application/json');
+        try {
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                 throw new \Exception("Méthode non autorisée");
+            }
+            if (!isset($_FILES['file'])) {
+                 throw new \Exception("Aucun fichier reçu");
+            }
+            
+            $uploadService = new UploadService('uploads/projects');
+            $result = $uploadService->upload($_FILES['file']);
+            
+            if ($result['success']) {
+                echo json_encode([
+                    'success' => true,
+                    'url' => url('/uploads/projects/' . $result['path'])
+                ]);
+            } else {
+                echo json_encode(['success' => false, 'message' => $result['message']]);
+            }
+        } catch (\Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+        exit;
     }
 
     public function project_delete() {

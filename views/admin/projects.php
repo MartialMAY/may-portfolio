@@ -67,7 +67,7 @@
                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
                     <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Mes Projets</h2>
                 </div>
-                <a href="<?php echo $this->base; ?>/admin/projects/add" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+                <a href="<?php echo url('/admin/projects/add'); ?>" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
                     <i data-feather="plus" class="w-4 h-4"></i> Ajouter un projet
                 </a>
             </div>
@@ -75,8 +75,11 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($projects as $proj): ?>
                     <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm group">
-                        <div class="h-48 overflow-hidden bg-gray-100">
-                            <img src="<?php echo url($proj['image_url']); ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="h-48 overflow-hidden bg-gray-100 flex items-center justify-center text-gray-400">
+                            <?php 
+                            $img_url = $proj['cover_image'] ?: explode('|', explode(',', $proj['image_url'])[0])[0];
+                            ?>
+                            <img src="<?php echo url(trim($img_url)); ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x300?text=Indisponible'">
                         </div>
                         <div class="p-8">
                             <span class="text-[9px] font-bold uppercase tracking-widest text-blue-600 block mb-2"><?php echo $proj['category']; ?></span>

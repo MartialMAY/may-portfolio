@@ -24,11 +24,6 @@
                     <span class="label-caps text-blue-600 block mb-6">Sélection</span>
                     <h2 class="display-title text-5xl md:text-7xl">Projets</h2>
                 </div>
-                <div class="lg:col-span-8 flex justify-end items-end">
-                    <a href="#" class="label-caps border-b border-black pb-1 hover:text-blue-600 hover:border-blue-600 transition-all">
-                        Tout l'archive
-                    </a>
-                </div>
             </div>
 
             <!-- Grille de projets (remplie par JS) -->

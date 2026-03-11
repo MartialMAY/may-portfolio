@@ -14,6 +14,10 @@ class ViewHelper {
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
         
         $baseUrl = $protocol . "://" . $host . $base;
+        if (strpos($path, 'http://') === 0 || strpos($path, 'https://') === 0) {
+            return $path;
+        }
+
         $path = ltrim($path, '/');
         return $baseUrl . ($path ? '/' . $path : '');
     }

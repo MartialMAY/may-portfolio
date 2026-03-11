@@ -5,3 +5,65 @@
 [2026-01-24 17:24:58] IP: ::1 | User: admin | Action: CONTACT_MESSAGE_SENT | Module: CONTACT | Details: From: momo (momo@gmail.com)
 [2026-01-24 18:03:42] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/messages
 [2026-01-24 18:03:53] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-02 13:17:57] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin
+[2026-03-02 13:23:20] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-05 11:01:40] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin
+[2026-03-05 11:01:42] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-05 11:02:33] IP: ::1 | User: admin | Action: UPDATE_CV_PDF | Module: CV | Details: Uploaded new PDF
+[2026-03-05 11:10:48] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/timeline/edit?id=1
+[2026-03-05 11:10:58] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-05 11:15:56] IP: ::1 | User: admin | Action: CREATE_TIMELINE | Module: TIMELINE | Details: Title: BTS SIO - Option SLAM (2ème année)
+[2026-03-05 11:16:30] IP: ::1 | User: admin | Action: CREATE_TIMELINE | Module: TIMELINE | Details: Title: BTS SIO - Option SLAM
+[2026-03-05 11:17:20] IP: ::1 | User: admin | Action: CREATE_TIMELINE | Module: TIMELINE | Details: Title: Stage développeur web
+[2026-03-05 11:18:11] IP: ::1 | User: admin | Action: CREATE_TIMELINE | Module: TIMELINE | Details: Title: Stage développeur web
+[2026-03-05 11:19:06] IP: ::1 | User: admin | Action: CREATE_TIMELINE | Module: TIMELINE | Details: Title: Référencement de site web (SEO), Stage
+[2026-03-05 11:21:10] IP: ::1 | User: admin | Action: DELETE_TIMELINE | Module: TIMELINE | Details: ID: 1
+[2026-03-05 11:21:15] IP: ::1 | User: admin | Action: DELETE_TIMELINE | Module: TIMELINE | Details: ID: 2
+[2026-03-05 11:21:23] IP: ::1 | User: admin | Action: DELETE_TIMELINE | Module: TIMELINE | Details: ID: 4
+[2026-03-05 11:22:10] IP: ::1 | User: admin | Action: UPDATE_TIMELINE | Module: TIMELINE | Details: Title: BTS SIO - Option SLAM (2ème année)
+[2026-03-05 11:22:43] IP: ::1 | User: admin | Action: UPDATE_TIMELINE | Module: TIMELINE | Details: Title: BTS SIO - Option SLAM
+[2026-03-05 11:23:34] IP: ::1 | User: admin | Action: UPDATE_TIMELINE | Module: TIMELINE | Details: Title: Stage développeur web
+[2026-03-05 11:23:43] IP: ::1 | User: admin | Action: UPDATE_TIMELINE | Module: TIMELINE | Details: Title: Stage développeur web
+[2026-03-05 11:23:54] IP: ::1 | User: admin | Action: UPDATE_TIMELINE | Module: TIMELINE | Details: Title: Référencement de site web (SEO), Stage
+[2026-03-05 16:08:05] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin
+[2026-03-05 16:08:19] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-06 19:22:59] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects
+[2026-03-10 13:59:33] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/timeline
+[2026-03-10 13:59:36] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-10 16:26:02] IP: ::1 | User: Guest | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-10 16:26:16] IP: ::1 | User: Guest | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-10 16:26:20] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects/add
+[2026-03-10 16:26:22] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-10 16:35:48] IP: ::1 | User: admin | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-10 16:36:15] IP: ::1 | User: admin | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-10 16:37:33] IP: ::1 | User: admin | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-10 16:44:46] IP: ::1 | User: admin | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-10 16:45:07] IP: ::1 | User: admin | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/add
+[2026-03-11 09:16:56] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects
+[2026-03-11 09:17:00] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-11 09:24:28] IP: ::1 | User: admin | Action: CREATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI — Assistant vocal urbain pour la ville de Reims
+[2026-03-11 09:25:47] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI — Assistant vocal urbain pour la ville de Reims
+[2026-03-11 09:26:25] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI — Assistant vocal urbain pour la ville de Reims
+[2026-03-11 09:29:26] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 09:34:31] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 09:39:16] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 09:42:51] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 10:44:16] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects/edit?id=5
+[2026-03-11 10:44:20] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-11 10:44:56] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 10:46:07] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 10:46:58] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 10:53:07] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 15:09:47] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects/edit?id=5
+[2026-03-11 15:09:49] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-11 15:54:28] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 19:10:41] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects/edit?id=5
+[2026-03-11 19:10:43] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-11 21:18:56] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects
+[2026-03-11 21:18:57] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-11 21:34:18] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 22:19:13] IP: ::1 | User: Guest | Action: CSRF_INVALID_TOKEN | Module: SECURITY | Details: Referer: http://localhost/may-portfolio/public/admin/projects/edit?id=5
+[2026-03-11 22:19:19] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects/edit?id=5
+[2026-03-11 22:19:21] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-11 22:31:48] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-11 22:51:15] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI

@@ -219,7 +219,7 @@ function renderHomeProjects() {
           <!-- Image Wrapper -->
           <div class="aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-gray-100 border border-gray-100 relative">
             <img 
-              src="${project.image_url || project.thumbnail}" 
+              src="${project.cover_image || project.image_url.split(',')[0].split('|')[0] || project.thumbnail}" 
               alt="${project.title}" 
               class="w-full h-full object-cover grayscale opacity-90 transition-all duration-1000 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100"
             />
@@ -238,6 +238,15 @@ function renderHomeProjects() {
               <h3 class="text-2xl md:text-3xl font-bold uppercase font-['Space_Grotesk'] tracking-tight group-hover:text-white transition-colors duration-500">${project.title}</h3>
             </div>
             <span class="label-caps text-gray-200 group-hover:text-white/20 transition-colors duration-500 text-2xl font-black">0${idx + 1}</span>
+          </div>
+
+          <!-- Stack Technique (Home Card) -->
+          <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100/10 opacity-0 group-hover:opacity-100 transition-all duration-700">
+             ${(project.technologies || '').split(',').map(tech => tech.trim()).filter(t => t !== '').map(tech => `
+                <span class="px-3 py-1 bg-white/10 text-white rounded-lg text-[8px] font-black tracking-widest uppercase border border-white/10">
+                    ${tech}
+                </span>
+             `).join('')}
           </div>
         </div>
       `).join('');
@@ -260,53 +269,207 @@ function enableScroll() {
 const modal = document.getElementById('project-modal');
 const modalContent = document.getElementById('modal-content');
 const modalClose = document.getElementById('modal-close');
-const modalTitle = document.getElementById('modal-title');
+
+let currentProjectImages = [];
+let currentImageIndex = 0;
+
+function updateCarousel() {
+  const track = document.querySelector('.carousel-track');
+  if (!track) return;
+  track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+
+  // Update caption
+  const captionEl = document.getElementById('carousel-caption');
+  if (captionEl && currentProjectImages[currentImageIndex]) {
+    captionEl.style.opacity = '0';
+    setTimeout(() => {
+      captionEl.textContent = currentProjectImages[currentImageIndex].caption || "Aperçu du projet";
+      captionEl.style.opacity = '1';
+    }, 150);
+  }
+
+  // Update counter
+  const counterEl = document.querySelector('.carousel-counter');
+  if (counterEl) {
+    counterEl.textContent = `${currentImageIndex + 1} / ${currentProjectImages.length}`;
+  }
+
+  // Reset zoom on slide change
+  resetZoom();
+}
+
+function resetZoom(force = true) {
+  const viewport = document.querySelector('.carousel-viewport');
+  if (viewport) {
+    if (force) viewport.classList.remove('is-zoomed');
+    const activeImg = viewport.querySelector('.carousel-slide:nth-child(' + (currentImageIndex + 1) + ') img');
+    if (activeImg) {
+      activeImg.style.transform = viewport.classList.contains('is-zoomed') ? 'scale(2.5)' : '';
+      activeImg.style.transformOrigin = 'center';
+    }
+  }
+}
+
+function toggleZoom() {
+  const viewport = document.querySelector('.carousel-viewport');
+  if (!viewport) return;
+  
+  viewport.classList.toggle('is-zoomed');
+  const isZoomed = viewport.classList.contains('is-zoomed');
+  
+  // Update zoom icon if feather is available
+  const zoomBtn = document.querySelector('.carousel-btn-zoom i');
+  if (zoomBtn && typeof feather !== 'undefined') {
+    zoomBtn.setAttribute('data-feather', isZoomed ? 'zoom-out' : 'zoom-in');
+    feather.replace();
+  }
+
+  resetZoom(!isZoomed);
+}
+
+function handleZoomMove(e) {
+  const viewport = document.querySelector('.carousel-viewport');
+  if (!viewport || !viewport.classList.contains('is-zoomed')) return;
+
+  const rect = viewport.getBoundingClientRect();
+  const x = ((e.clientX - rect.left) / rect.width) * 100;
+  const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+  const activeImg = viewport.querySelector('.carousel-slide:nth-child(' + (currentImageIndex + 1) + ') img');
+  if (activeImg) {
+    activeImg.style.transformOrigin = `${x}% ${y}%`;
+    activeImg.style.transform = 'scale(2.5)';
+  }
+}
+
+function nextImage() {
+  if (currentProjectImages.length <= 1) return;
+  currentImageIndex = (currentImageIndex + 1) % currentProjectImages.length;
+  updateCarousel();
+}
+
+function prevImage() {
+  if (currentProjectImages.length <= 1) return;
+  currentImageIndex = (currentImageIndex - 1 + currentProjectImages.length) % currentProjectImages.length;
+  updateCarousel();
+}
 
 function openProjectModal(projectId) {
   disableScroll();
   const project = PROJECTS.find(p => p.id == projectId);
   if (!project) return;
 
-  if (modalTitle) modalTitle.textContent = project.title;
+  // Split des images et extraction des éventuelles légendes (Format: URL|Légende)
+  currentProjectImages = (project.image_url || project.thumbnail || "").split(',').map(item => {
+    const parts = item.trim().split('|');
+    return {
+      url: parts[0],
+      caption: parts[1] || "" // Légende optionnelle
+    };
+  }).filter(img => img.url !== "");
+
+  currentImageIndex = 0;
+
   if (modalContent) {
     modalContent.innerHTML = `
-        <div class="space-y-10">
-          <div class="aspect-video bg-gray-100 rounded-xl overflow-hidden">
-            <img src="${project.image_url || project.thumbnail}" alt="${project.title}" class="w-full h-full object-cover" />
-          </div>
-
-          <div class="grid md:grid-cols-3 gap-12">
-            <div class="md:col-span-2 space-y-6">
-              <div>
-                <h4 class="text-lg font-bold mb-3">Description</h4>
-                <p class="text-gray-600 leading-relaxed">
-                  ${project.description || project.fullDescription}
-                </p>
-              </div>
-              
-              <div class="flex flex-wrap gap-4 pt-4">
-                ${project.project_url ? `
-                  <a href="${project.project_url}" target="_blank" class="flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition-colors">
-                    <i data-feather="external-link"></i>
-                    <span>Lien direct</span>
-                  </a>
-                ` : ''}
-              </div>
-            </div>
-
-            <div class="space-y-8">
-              <div>
-                <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Catégorie</h4>
-                <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-gray-50 text-black text-[11px] font-bold rounded-lg border border-gray-100">
-                      ${project.category}
-                    </span>
+        <div class="flex flex-col gap-6">
+            <!-- HEADER SECTION -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-gray-100 relative">
+                <div class="flex-grow">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="label-caps text-blue-600">Projet Réalisé</span>
+                        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">${project.category}</span>
+                    </div>
+                    <h2 class="display-title text-3xl md:text-5xl lg:text-6xl">${project.title}</h2>
                 </div>
-              </div>
+                
+                <div class="flex items-center gap-4">
+                    ${project.project_url ? `
+                        <a href="${project.project_url}" target="_blank" class="flex items-center gap-3 bg-black text-white px-6 py-3 md:px-8 md:py-4 rounded-2xl text-[10px] md:text-xs font-bold hover:bg-blue-600 transition-all duration-300 whitespace-nowrap">
+                            <span>VOIR EN LIGNE</span>
+                            <i data-feather="external-link" class="w-4 h-4"></i>
+                        </a>
+                    ` : ''}
+                    
+                    <!-- Bouton de fermeture intégré -->
+                    <button onclick="closeModal()" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gray-50 flex items-center justify-center hover:bg-black hover:text-white transition-all duration-300 group shadow-sm flex-shrink-0">
+                        <i data-feather="x" class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"></i>
+                    </button>
+                </div>
             </div>
-          </div>
-        </div>
-      `;
+
+            <div class="project-grid">
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Description Globale</h4>
+                        <p class="text-gray-600 leading-relaxed text-lg font-light">
+                            ${project.description || project.fullDescription || "Aucune description disponible."}
+                        </p>
+                    </div>
+
+                    <!-- FOCUS IMAGE / CAPTION -->
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Focus Image</h4>
+                        <div id="carousel-caption" class="text-gray-600 leading-relaxed text-lg font-light transition-opacity duration-300">
+                            ${currentProjectImages[0]?.caption || "Aperçu du projet"}
+                        </div>
+                    </div>
+
+                </div>
+
+
+            <!-- CAROUSEL & TECH STACK (DROITE) -->
+            <div class="flex flex-col gap-6">
+                <!-- TECH STACK TOP -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">Stack Technique</h4>
+                    <div class="flex flex-wrap gap-2">
+                        ${(project.technologies || '').split(',').map(tech => tech.trim()).filter(t => t !== '').map(tech => `
+                            <span class="inline-block px-4 py-2 bg-blue-50 text-blue-600 text-[10px] font-black rounded-xl border border-blue-100 uppercase tracking-widest leading-none">
+                                ${tech}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="carousel-container">
+                    <div class="carousel-viewport group/carousel bg-white">
+                        <div class="carousel-track">
+                            ${currentProjectImages.map(img => `
+                                <div class="carousel-slide">
+                                    <img src="${img.url}" alt="${project.title}" class="w-full h-full object-contain bg-white" onerror="this.src='https://placehold.co/800x500?text=Image+Indisponible'"/>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <!-- Navigation Overlay -->
+                        ${currentProjectImages.length > 1 ? `
+                            <div class="carousel-overlay-nav opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                <button onclick="prevImage()" class="carousel-btn-floating left-4 pointer-events-auto" aria-label="Précédent">
+                                    <i data-feather="chevron-left" class="w-4 h-4"></i>
+                                </button>
+                                <button onclick="nextImage()" class="carousel-btn-floating right-4 pointer-events-auto" aria-label="Suivant">
+                                    <i data-feather="chevron-right" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+
+                        <div class="carousel-top-actions">
+                            <button onclick="toggleZoom()" class="carousel-btn-zoom" title="Zoomer">
+                                <i data-feather="zoom-in" class="w-3 h-3"></i>
+                            </button>
+                            <div class="carousel-counter">
+                                ${currentImageIndex + 1} / ${currentProjectImages.length}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- end of flex-col gap-8 -->
+        </div> <!-- end of project-grid -->
+    </div> <!-- end of flex-col gap-10 -->
+    `;
   }
 
   if (modal) {
@@ -322,6 +485,13 @@ function openProjectModal(projectId) {
   }
 
   if (typeof feather !== 'undefined') feather.replace();
+
+  // Add event listener for zoom move
+  const viewport = document.querySelector('.carousel-viewport');
+  if (viewport) {
+    viewport.addEventListener('mousemove', handleZoomMove);
+    viewport.addEventListener('mouseleave', () => resetZoom(false));
+  }
 }
 
 function closeModal() {
@@ -339,6 +509,7 @@ function closeModal() {
     }, 300);
   }
 }
+window.closeModal = closeModal;
 
 if (modalClose) {
   modalClose.addEventListener('click', closeModal);

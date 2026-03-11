@@ -176,4 +176,9 @@ $router->add('/admin/messages/reply', function() {
     $controller->reply();
 });
 
+$router->add('/admin/upload-ajax', function() {
+    $controller = new AdminController();
+    $controller->upload_ajax();
+});
+
 $router->run();

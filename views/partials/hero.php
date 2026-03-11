@@ -23,29 +23,40 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-6 mt-8 md:mt-12">
-                <p class="text-[14px] md:text-[16px] text-gray-400 leading-relaxed font-light tracking-tight max-w-md fade-in" style="transition-delay: 400ms;">
+
+
+
+            <div class="lg:col-span-8 mt-8 md:mt-12">
+                <p class="text-xl text-gray-400 leading-relaxed font-light tracking-tight max-w-2xl fade-in" style="transition-delay: 400ms;">
                     Étudiant en <span class="text-black font-semibold">BTS SIO SLAM</span>, je vous présente mon portfolio, un espace où vous allez découvrir mon parcours scolaire et les différents projets que j'ai réalisés au cours de ma formation.
                 </p>
             </div>
 
+
+
             <!-- Call to Action circulaire -->
-            <div class="lg:col-start-10 lg:col-span-3 flex justify-end items-end md:mt-0 mt-12">
+
+
+            <div class="lg:col-start-10 lg:col-span-3 flex justify-end items-start md:mt-0 mt-12 lg:-mt-32">
                 <div class="fade-in" style="transition-delay: 600ms;">
-                    <button data-scroll-to="projects" class="w-32 h-32 md:w-52 md:h-52 rounded-full border border-gray-100 flex items-center justify-center group hover:border-black transition-all duration-700 relative overflow-hidden bg-white shadow-sm hover:shadow-xl">
+                    <button data-scroll-to="projects" class="w-44 h-44 md:w-72 md:h-72 rounded-full border border-gray-100 flex items-center justify-center group hover:border-black transition-all duration-700 relative overflow-hidden bg-white shadow-sm hover:shadow-xl">
                         <div class="absolute inset-0 bg-black translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out"></div>
-                        <span class="label-caps text-center relative z-10 transition-colors duration-500 group-hover:text-white leading-relaxed">
+
+                        <span class="label-caps text-base md:text-xl text-center relative z-10 transition-colors duration-500 group-hover:text-white leading-tight">
                             Découvrir<br/>mes projets
                         </span>
                     </button>
                 </div>
             </div>
+
         </div>
     </div>
 
     <!-- Indicateur de défilement (Scroll Indicator) -->
-    <div class="absolute bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10 fade-in" style="transition-delay: 800ms;">
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10 fade-in" style="transition-delay: 800ms;">
         <span class="label-caps text-[8px] text-gray-300">Scroll</span>
         <div class="w-px h-12 bg-gradient-to-b from-black to-transparent animate-pulse"></div>
     </div>
+
 </section>

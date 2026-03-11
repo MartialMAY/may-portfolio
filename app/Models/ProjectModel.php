@@ -34,11 +34,11 @@ class ProjectModel {
         if ($this->conn === null) return false;
 
         if (isset($data['id']) && !empty($data['id'])) {
-            $query = "UPDATE " . $this->table_name . " SET title = :title, category = :category, image_url = :image_url, description = :description, project_url = :project_url WHERE id = :id";
+            $query = "UPDATE " . $this->table_name . " SET title = :title, category = :category, image_url = :image_url, description = :description, technologies = :technologies, project_url = :project_url, cover_image = :cover_image WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $data['id']);
         } else {
-            $query = "INSERT INTO " . $this->table_name . " (title, category, image_url, description, project_url) VALUES (:title, :category, :image_url, :description, :project_url)";
+            $query = "INSERT INTO " . $this->table_name . " (title, category, image_url, description, technologies, project_url, cover_image) VALUES (:title, :category, :image_url, :description, :technologies, :project_url, :cover_image)";
             $stmt = $this->conn->prepare($query);
         }
 
@@ -46,7 +46,9 @@ class ProjectModel {
         $stmt->bindParam(':category', $data['category']);
         $stmt->bindParam(':image_url', $data['image_url']);
         $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':technologies', $data['technologies']);
         $stmt->bindParam(':project_url', $data['project_url']);
+        $stmt->bindParam(':cover_image', $data['cover_image']);
 
         return $stmt->execute();
     }

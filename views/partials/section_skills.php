@@ -23,7 +23,7 @@
         <div class="container-main">
             <div class="mb-20">
                 <span class="label-caps text-blue-600 block mb-6">Toolbox</span>
-                <h2 class="display-title text-5xl md:text-7xl tracking-tighter uppercase">Compétences</h2>
+                <h2 class="display-title text-5xl md:text-7xl tracking-tighter uppercase">Expertise Technique</h2>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -34,14 +34,14 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="text-xl font-bold uppercase tracking-tight font-['Space_Grotesk'] border-b border-gray-100 pb-6 mb-8 flex justify-between items-center group-hover:text-white group-hover:border-white/10 transition-all duration-500">
-                            Programmation & Développement
+                            Développement Web & Mobile
                             <i data-feather="code" class="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-4">
-                            <?php foreach(['HTML & CSS', 'PHP', 'JavaScript', 'Flutter', 'WordPress', 'Python', 'C#', 'SQL'] as $skill): ?>
+                            <?php foreach(['PHP', 'JavaScript', 'TypeScript', 'React', 'Next.js'] as $skill): ?>
                             <div class="flex items-center gap-4 group/item cursor-default">
                                 <div class="w-1.5 h-1.5 rounded-full bg-blue-600 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
-                                <span class="label-caps text-[11px] text-gray-500 group-hover:text-white/60 transition-colors duration-500"><?php echo $skill; ?></span>
+                                <span class="label-caps text-sm text-gray-500 group-hover:text-white transition-colors duration-500"><?php echo $skill; ?></span>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -55,14 +55,14 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="text-xl font-bold uppercase tracking-tight font-['Space_Grotesk'] border-b border-gray-100 pb-6 mb-8 flex justify-between items-center group-hover:text-white group-hover:border-white/10 transition-all duration-500">
-                            Bases de données
+                            Backend & Données
                             <i data-feather="database" class="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <div class="flex flex-col gap-4">
-                            <?php foreach(['MySQL', 'Firebase'] as $skill): ?>
+                            <?php foreach(['SQL', 'MySQL', 'Firebase', 'Supabase', 'Python'] as $skill): ?>
                             <div class="flex items-center gap-4 group/item cursor-default">
                                 <div class="w-1.5 h-1.5 rounded-full bg-blue-600 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
-                                <span class="label-caps text-[11px] text-gray-500 group-hover:text-white/60 transition-colors duration-500"><?php echo $skill; ?></span>
+                                <span class="label-caps text-sm text-gray-500 group-hover:text-white transition-colors duration-500"><?php echo $skill; ?></span>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -76,14 +76,14 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="text-xl font-bold uppercase tracking-tight font-['Space_Grotesk'] border-b border-gray-100 pb-6 mb-8 flex justify-between items-center group-hover:text-white group-hover:border-white/10 transition-all duration-500">
-                            Réseaux & Sécurité
+                            DevOps & Environnement
                             <i data-feather="shield" class="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <div class="flex flex-col gap-4">
-                            <?php foreach(['Cybersécurité', 'Virtualisation', 'GLPI', 'Script Bash'] as $skill): ?>
+                            <?php foreach(['Git/GitHub', 'Docker', 'Sécurisation applicative (OWASP)', 'Linux'] as $skill): ?>
                             <div class="flex items-center gap-4 group/item cursor-default">
                                 <div class="w-1.5 h-1.5 rounded-full bg-blue-600 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
-                                <span class="label-caps text-[11px] text-gray-500 group-hover:text-white/60 transition-colors duration-500"><?php echo $skill; ?></span>
+                                <span class="label-caps text-sm text-gray-500 group-hover:text-white transition-colors duration-500"><?php echo $skill; ?></span>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -101,10 +101,10 @@
                             <i data-feather="clipboard" class="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <div class="flex flex-col gap-4">
-                            <?php foreach(['GANTT', 'Notion', 'GitHub'] as $skill): ?>
+                            <?php foreach(['Méthodes Agiles (Scrum, Kanban)', 'GitHub Projects', 'Notion...'] as $skill): ?>
                             <div class="flex items-center gap-4 group/item cursor-default">
                                 <div class="w-1.5 h-1.5 rounded-full bg-blue-600 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
-                                <span class="label-caps text-[11px] text-gray-500 group-hover:text-white/60 transition-colors duration-500"><?php echo $skill; ?></span>
+                                <span class="label-caps text-sm text-gray-500 group-hover:text-white transition-colors duration-500"><?php echo $skill; ?></span>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -118,14 +118,14 @@
                     </div>
                     <div class="relative z-10">
                         <h3 class="text-xl font-bold uppercase tracking-tight font-['Space_Grotesk'] border-b border-gray-100 pb-6 mb-8 flex justify-between items-center group-hover:text-white group-hover:border-white/10 transition-all duration-500">
-                            Graphisme & Design
+                            Design & UX
                             <i data-feather="feather" class="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity"></i>
                         </h3>
                         <div class="flex flex-col gap-4">
-                            <?php foreach(['Illustrator', 'Logo Design', 'Photoshop', 'Figma', 'InDesign'] as $skill): ?>
+                            <?php foreach(['Figma', 'Suite Adobe'] as $skill): ?>
                             <div class="flex items-center gap-4 group/item cursor-default">
                                 <div class="w-1.5 h-1.5 rounded-full bg-blue-600 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
-                                <span class="label-caps text-[11px] text-gray-500 group-hover:text-white/60 transition-colors duration-500"><?php echo $skill; ?></span>
+                                <span class="label-caps text-sm text-gray-500 group-hover:text-white transition-colors duration-500"><?php echo $skill; ?></span>
                             </div>
                             <?php endforeach; ?>
                         </div>

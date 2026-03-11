@@ -21,8 +21,9 @@ CREATE TABLE IF NOT EXISTS projects (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     category VARCHAR(50) NOT NULL,
-    image_url VARCHAR(255) NOT NULL,
+    image_url TEXT NOT NULL,
     description TEXT NOT NULL,
+    technologies TEXT,
     project_url VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -118,7 +119,7 @@ INSERT INTO stats (label, value, display_order) VALUES
 
 TRUNCATE TABLE projects;
 INSERT INTO projects (title, category, image_url, description) VALUES 
-('GESTIONNAIRE DE TÂCHES', 'WEB DESIGN', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80', 'Un outil complet de gestion de tâches.'),
+('GESTIONNAIRE DE TÂCHES', 'WEB DESIGN', 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&q=80|Tableau de Bord Principal & Visualisation,https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&q=80|Détail du Workflow et Gestion des Tâches,https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&q=80|Interface responsive sur poste de travail', 'Un outil complet de gestion de tâches.'),
 ('API E-COMMERCE', 'BACK-END', 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80', 'Une API robuste pour plateforme e-commerce.'),
 ('APPLICATION FITNESS', 'MOBILE', 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80', 'Une app compagnon pour le sport.'),
 ('PORTFOLIO MINIMALISTE', 'UI/UX', 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&q=80', 'Un design épuré et moderne.');

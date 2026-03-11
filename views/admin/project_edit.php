@@ -48,15 +48,333 @@
                             <textarea name="description" required rows="6" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors"><?php echo htmlspecialchars($project['description'] ?? ''); ?></textarea>
                         </div>
 
-                        <div class="space-y-4">
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Image du projet</label>
-                            <?php if (isset($project['image_url'])): ?>
-                                <div class="mb-4 h-32 w-48 rounded-xl overflow-hidden border border-gray-100">
-                                    <img src="<?php echo url($project['image_url']); ?>" class="w-full h-full object-cover">
+                        <!-- Image de Couverture -->
+                        <div class="space-y-4 pt-4 border-t border-gray-50">
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Image de Couverture (S'affiche sur l'accueil)</label>
+                            <div class="flex gap-4 items-center">
+                                <div class="w-24 h-24 rounded-2xl bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0" id="cover-preview">
+                                    <img src="<?php echo $project['cover_image'] ? url($project['cover_image']) : 'https://placehold.co/100x100?text=Aperçu'; ?>" class="w-full h-full object-cover">
                                 </div>
-                            <?php endif; ?>
-                            <input type="file" name="image" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
+                                <div class="flex-1 space-y-2">
+                                    <div class="flex gap-2">
+                                        <input type="text" name="cover_image" id="cover_image_input" 
+                                            value="<?php echo htmlspecialchars($project['cover_image'] ?? ''); ?>" 
+                                            placeholder="URL de l'image ou upload" 
+                                            class="flex-1 p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
+                                        
+                                        <label class="cursor-pointer bg-black text-white p-4 rounded-xl hover:bg-blue-600 transition-all flex items-center justify-center group/cover">
+                                            <i data-feather="upload" class="w-5 h-5"></i>
+                                            <input type="file" class="hidden" accept="image/*" onchange="uploadCover(this)">
+                                        </label>
+                                    </div>
+                                    <p class="text-[9px] text-gray-400 font-medium">L'image de couverture doit être au format paysage pour un meilleur rendu sur l'accueil.</p>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Stack Technique (Badges) -->
+                        <div class="space-y-4">
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Stack Technique (ex: Next.js, PHP, React...)</label>
+                            <div class="flex flex-wrap gap-2 mb-3" id="badge-container">
+                                <!-- Badges will be rendered here -->
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="text" id="tech-input" placeholder="Ajouter une techno et appuyer sur Entrée" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors text-sm">
+                                <button type="button" onclick="addTechFromInput()" class="px-6 bg-black text-white rounded-xl hover:bg-blue-600 transition-all font-bold text-xs uppercase tracking-widest">
+                                    Ajouter
+                                </button>
+                            </div>
+                            <input type="hidden" name="technologies" id="final_technologies" value="<?php echo htmlspecialchars($project['technologies'] ?? ''); ?>">
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Images & Légendes du Carousel</label>
+                                <button type="button" onclick="addImageRow()" class="text-[10px] font-bold text-blue-600 uppercase tracking-widest hover:underline flex items-center gap-1">
+                                    <i data-feather="plus" class="w-3 h-3"></i> Ajouter une image
+                                </button>
+                            </div>
+
+                            <div id="images-repeater" class="space-y-4">
+                                <!-- Les lignes seront générées ici par JS -->
+                            </div>
+
+                            <!-- Input caché qui contient la chaîne finale URL|Légende,URL|Légende -->
+                            <input type="hidden" name="image_url" id="final_image_url" value="<?php echo htmlspecialchars($project['image_url'] ?? ''); ?>">
+
+                            <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 mt-8">
+                                <h4 class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4 flex items-center gap-2">
+                                    <i data-feather="eye" class="w-3 h-3"></i> Aperçu du rendu
+                                </h4>
+                                <div id="images-preview" class="grid grid-cols-3 gap-4">
+                                    <!-- Aperçu dynamique -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            let imagesData = [];
+                            
+                            // Initialisation
+                            const initialValue = document.getElementById('final_image_url').value;
+                            if (initialValue) {
+                                initialValue.split(',').forEach(item => {
+                                    const parts = item.split('|');
+                                    if(parts[0].trim()) {
+                                        imagesData.push({
+                                            url: parts[0].trim(),
+                                            caption: (parts[1] || "").trim()
+                                        });
+                                    }
+                                });
+                            }
+                            if (imagesData.length === 0) imagesData.push({ url: '', caption: '' });
+
+                            function renderRepeater() {
+                                const container = document.getElementById('images-repeater');
+                                container.innerHTML = '';
+                                
+                                imagesData.forEach((data, index) => {
+                                    const row = document.createElement('div');
+                                    row.className = 'flex gap-4 items-start bg-gray-50 p-4 rounded-xl border border-gray-100 group';
+                                    row.innerHTML = `
+                                        <!-- Reorder Buttons -->
+                                        <div class="flex flex-col gap-1">
+                                            <button type="button" onclick="moveUp(${index})" class="p-1 text-gray-400 hover:text-black transition-colors ${index === 0 ? 'opacity-0 pointer-events-none' : ''}">
+                                                <i data-feather="chevron-up" class="w-4 h-4"></i>
+                                            </button>
+                                            <button type="button" onclick="moveDown(${index})" class="p-1 text-gray-400 hover:text-black transition-colors ${index === imagesData.length - 1 ? 'opacity-0 pointer-events-none' : ''}">
+                                                <i data-feather="chevron-down" class="w-4 h-4"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="flex-1 space-y-3">
+                                            <div class="flex gap-2">
+                                                <input type="text" placeholder="Lien de l'image (https://...)" value="${data.url}" 
+                                                    oninput="updateData(${index}, 'url', this.value)"
+                                                    id="url-input-${index}"
+                                                    class="flex-1 p-3 bg-white border border-gray-100 rounded-lg text-sm outline-none focus:border-blue-500 transition-colors">
+                                                
+                                                <label class="cursor-pointer bg-white border border-gray-100 p-3 rounded-lg hover:border-blue-500 transition-all flex items-center justify-center group/upload" title="Uploader une image">
+                                                    <i data-feather="upload" class="w-4 h-4 text-gray-400 group-hover/upload:text-blue-500"></i>
+                                                    <input type="file" class="hidden" accept="image/*" onchange="uploadImage(${index}, this)">
+                                                </label>
+                                            </div>
+                                            
+                                            <input type="text" placeholder="Description courte de l'image" value="${data.caption}" 
+                                                oninput="updateData(${index}, 'caption', this.value)"
+                                                class="w-full p-3 bg-white border border-gray-100 rounded-lg text-xs outline-none focus:border-blue-500 transition-colors italic">
+                                        </div>
+                                        
+                                        <button type="button" onclick="removeImageRow(${index})" class="p-3 text-gray-400 hover:text-red-500 transition-colors">
+                                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    `;
+                                    container.appendChild(row);
+                                });
+                                feather.replace();
+                                updateFinalValue();
+                                renderPreview();
+                            }
+
+                            function moveUp(index) {
+                                if (index > 0) {
+                                    const temp = imagesData[index];
+                                    imagesData[index] = imagesData[index - 1];
+                                    imagesData[index - 1] = temp;
+                                    renderRepeater();
+                                }
+                            }
+
+                            function moveDown(index) {
+                                if (index < imagesData.length - 1) {
+                                    const temp = imagesData[index];
+                                    imagesData[index] = imagesData[index + 1];
+                                    imagesData[index + 1] = temp;
+                                    renderRepeater();
+                                }
+                            }
+
+                            async function uploadImage(index, input) {
+                                if (!input.files || !input.files[0]) return;
+                                
+                                const file = input.files[0];
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                
+                                // Get CSRF token from the form
+                                const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+                                if (csrfToken) {
+                                    formData.append('csrf_token', csrfToken);
+                                }
+                                
+                                // Visual feedback
+                                const row = input.closest('.group');
+                                row.classList.add('opacity-50', 'pointer-events-none');
+                                
+                                try {
+                                    const response = await fetch('<?php echo url("/admin/upload-ajax"); ?>', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    
+                                    // Check if response is JSON
+                                    const contentType = response.headers.get("content-type");
+                                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                                        const result = await response.json();
+                                        if (result.success) {
+                                            updateData(index, 'url', result.url);
+                                            renderRepeater();
+                                        } else {
+                                            alert("Erreur Serveur: " + result.message);
+                                        }
+                                    } else {
+                                        // Handle non-JSON response (like CSRF error message)
+                                        const text = await response.text();
+                                        throw new Error(text);
+                                    }
+                                } catch (error) {
+                                    console.error("Upload error:", error);
+                                    alert("Erreur: " + error.message);
+                                } finally {
+                                    row.classList.remove('opacity-50', 'pointer-events-none');
+                                }
+                            }
+
+                            async function uploadCover(input) {
+                                if (!input.files || !input.files[0]) return;
+                                
+                                const file = input.files[0];
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                
+                                const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+                                if (csrfToken) formData.append('csrf_token', csrfToken);
+                                
+                                const previewContainer = document.getElementById('cover-preview');
+                                previewContainer.classList.add('opacity-50');
+                                
+                                try {
+                                    const response = await fetch('<?php echo url("/admin/upload-ajax"); ?>', {
+                                        method: 'POST',
+                                        body: formData
+                                    });
+                                    const result = await response.json();
+                                    
+                                    if (result.success) {
+                                        document.getElementById('cover_image_input').value = result.url;
+                                        previewContainer.querySelector('img').src = result.url;
+                                    } else {
+                                        alert("Erreur: " + result.message);
+                                    }
+                                } catch (error) {
+                                    console.error("Upload error:", error);
+                                    alert("Erreur lors du téléchargement.");
+                                } finally {
+                                    previewContainer.classList.remove('opacity-50');
+                                }
+                            }
+
+                            function addImageRow() {
+                                imagesData.push({ url: '', caption: '' });
+                                renderRepeater();
+                            }
+
+                            function removeImageRow(index) {
+                                if (imagesData.length > 1) {
+                                    imagesData.splice(index, 1);
+                                    renderRepeater();
+                                }
+                            }
+
+                            function updateData(index, field, value) {
+                                imagesData[index][field] = value;
+                                updateFinalValue();
+                                renderPreview();
+                            }
+
+                            function updateFinalValue() {
+                                const finalStr = imagesData
+                                    .filter(d => d.url.trim() !== '')
+                                    .map(d => `${d.url.trim()}|${d.caption.trim()}`)
+                                    .join(',');
+                                document.getElementById('final_image_url').value = finalStr;
+                            }
+
+                            function renderPreview() {
+                                const preview = document.getElementById('images-preview');
+                                preview.innerHTML = '';
+                                imagesData.forEach(data => {
+                                    if(!data.url) return;
+                                    const card = document.createElement('div');
+                                    card.className = 'aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200 relative group';
+                                    card.innerHTML = `
+                                        <img src="${data.url}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/300x200?text=Lien+Invalide'">
+                                        <div class="absolute inset-0 bg-black/40 flex items-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <p class="text-[8px] text-white leading-tight">${data.caption || 'Pas de légende'}</p>
+                                        </div>
+                                    `;
+                                    preview.appendChild(card);
+                                });
+                            }
+
+                            // --- Gestion de la Stack Technique (Badges) ---
+                            let techStack = [];
+                            const techInput = document.getElementById('tech-input');
+                            const finalTechInput = document.getElementById('final_technologies');
+                            const badgeContainer = document.getElementById('badge-container');
+
+                            // Initialisation
+                            if (finalTechInput.value) {
+                                techStack = finalTechInput.value.split(',').map(t => t.trim()).filter(t => t !== '');
+                            }
+
+                            function renderBadges() {
+                                badgeContainer.innerHTML = '';
+                                techStack.forEach((tech, index) => {
+                                    const badge = document.createElement('span');
+                                    badge.className = 'inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-widest border border-blue-100 group';
+                                    badge.innerHTML = `
+                                        ${tech}
+                                        <button type="button" onclick="removeTech(${index})" class="hover:text-red-500 transition-colors">
+                                            <i data-feather="x" class="w-3 h-3"></i>
+                                        </button>
+                                    `;
+                                    badgeContainer.appendChild(badge);
+                                });
+                                feather.replace();
+                                finalTechInput.value = techStack.join(', ');
+                            }
+
+                            function addTechFromInput() {
+                                const val = techInput.value.trim();
+                                if (val && !techStack.includes(val)) {
+                                    techStack.push(val);
+                                    techInput.value = '';
+                                    renderBadges();
+                                }
+                            }
+
+                            function removeTech(index) {
+                                techStack.splice(index, 1);
+                                renderBadges();
+                            }
+
+                            if (techInput) {
+                                techInput.addEventListener('keydown', (e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        addTechFromInput();
+                                    }
+                                });
+                            }
+
+                            // Rendu global
+                            document.addEventListener('DOMContentLoaded', () => {
+                                renderRepeater();
+                                renderBadges();
+                            });
+                        </script>
                     </div>
                 </div>
 
