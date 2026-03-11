@@ -378,8 +378,7 @@ function openProjectModal(projectId) {
                 <div class="flex-grow">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="label-caps text-blue-600">Projet Réalisé</span>
-                        <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">${project.category}</span>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400 opacity-60">${project.category}</span>
                     </div>
                     <h2 class="display-title text-3xl md:text-5xl lg:text-6xl">${project.title}</h2>
                 </div>
