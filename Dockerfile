@@ -23,6 +23,9 @@ RUN mkdir -p /var/www/html/public/uploads/projects \
 
 WORKDIR /var/www/html/public
 
+# Disable PHP error display in production
+RUN echo "display_errors=Off\nerror_reporting=E_ALL\nlog_errors=On" > /usr/local/etc/php/conf.d/production.ini
+
 EXPOSE 8080
 
 CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} router.php"]
