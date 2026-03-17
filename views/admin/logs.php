@@ -53,6 +53,9 @@
             <a href="<?php echo url('/admin/logs'); ?>" class="sidebar-link active flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
                 <i data-feather="activity" class="w-4 h-4"></i> Journal (Logs)
             </a>
+            <a href="<?php echo url('/admin/settings'); ?>" class="sidebar-link flex items-center gap-3 p-3 rounded-xl text-sm font-medium transition-all hover:bg-gray-50">
+                <i data-feather="settings" class="w-4 h-4"></i> Paramètres
+            </a>
             <div class="pt-6">
                 <a href="<?php echo url('/'); ?>" target="_blank" class="flex items-center gap-3 p-3 text-blue-600 rounded-xl text-sm font-medium hover:bg-blue-50 transition-all">
                     <i data-feather="external-link" class="w-4 h-4"></i> Voir le site
