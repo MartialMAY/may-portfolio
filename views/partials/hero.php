@@ -25,7 +25,7 @@
 
             <div class="lg:col-span-8 mt-8 md:mt-12">
                 <p class="text-xl text-gray-400 leading-relaxed font-light tracking-tight max-w-2xl fade-in" style="transition-delay: 400ms;">
-                    <?php echo htmlspecialchars($settings['hero_description'] ?? 'Étudiant en BTS SIO SLAM, je vous présente mon portfolio, un espace où vous allez découvrir mon parcours scolaire et les différents projets que j\'ai réalisés au cours de ma formation.'); ?>
+                    <?php echo \App\Core\ViewHelper::renderBold($settings['hero_description'] ?? 'Étudiant en **BTS SIO SLAM**, je vous présente mon portfolio, un espace où vous allez découvrir mon parcours scolaire et les différents projets que j\'ai réalisés au cours de ma formation.'); ?>
                 </p>
             </div>
 

@@ -39,6 +39,14 @@ class ViewHelper {
     }
 
     /**
+     * Parse **bold** syntax into HTML spans.
+     */
+    public static function renderBold($text) {
+        $escaped = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+        return preg_replace('/\*\*(.*?)\*\*/', '<span class="text-black font-medium">$1</span>', $escaped);
+    }
+
+    /**
      * Simple redirect helper.
      */
     public static function redirect($path) {

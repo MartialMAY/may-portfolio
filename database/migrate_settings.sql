@@ -1,4 +1,6 @@
 -- Migration: Add settings table
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 CREATE TABLE IF NOT EXISTS settings (
     `key` VARCHAR(100) NOT NULL PRIMARY KEY,
     `value` TEXT

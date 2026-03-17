@@ -1,8 +1,4 @@
 <?php
-function renderBold($text) {
-    $escaped = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
-    return preg_replace('/\*\*(.*?)\*\*/', '<span class="text-black font-medium">$1</span>', $escaped);
-}
 $about1 = $settings['about_paragraph1'] ?? 'Je m\'appelle **MAYAMOU BATETANA Martial** ! Actuellement étudiant en deuxième année de **BTS SIO** (Services Informatiques aux Organisations), avec une spécialité **SLAM** (Solutions Logicielles et Applications Métier), je suis en voie de formation dans le secteur du développement, des bases de données ainsi que des systèmes d\'information.';
 $about2 = $settings['about_paragraph2'] ?? 'Étudiant au lycée **Paul Claudel à Laon**, l\'établissement me permet de me former afin de répondre au mieux aux besoins des entreprises en concevant des solutions logicielles adaptées.';
 ?>
@@ -19,10 +15,10 @@ $about2 = $settings['about_paragraph2'] ?? 'Étudiant au lycée **Paul Claudel �
                 <div class="lg:col-span-8 space-y-16">
                     <div class="space-y-8">
                         <p class="text-xl text-gray-500 font-light leading-relaxed">
-                            <?php echo renderBold($about1); ?>
+                            <?php echo \App\Core\ViewHelper::renderBold($about1); ?>
                         </p>
                         <p class="text-xl text-gray-500 font-light leading-relaxed">
-                            <?php echo renderBold($about2); ?>
+                            <?php echo \App\Core\ViewHelper::renderBold($about2); ?>
                         </p>
                     </div>
 
