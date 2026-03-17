@@ -84,3 +84,5 @@
 [2026-03-12 16:04:49] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /admin/timeline
 [2026-03-12 16:04:56] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
 [2026-03-12 16:06:42] IP: ::1 | User: admin | Action: DELETE_BTS | Module: BTS_SIO | Details: ID: 3
+[2026-03-17 09:11:36] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/timeline
+[2026-03-17 09:11:38] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in

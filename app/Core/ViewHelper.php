@@ -10,7 +10,9 @@ class ViewHelper {
         $scriptName = $_SERVER['SCRIPT_NAME'] ?? '/index.php';
         $base = str_replace('/index.php', '', $scriptName);
         
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+                   (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+                   ? "https" : "http";
         $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
         
         $baseUrl = $protocol . "://" . $host . $base;
