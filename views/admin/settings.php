@@ -55,6 +55,24 @@
                 </div>
             </div>
 
+            <!-- Section À propos -->
+            <div class="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-12 shadow-sm space-y-8">
+                <div>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] block mb-1">Section À propos</span>
+                    <p class="text-xs text-gray-400">Utilisez <code class="bg-gray-100 px-1 rounded">**mot**</code> pour mettre un mot en <strong>gras</strong>.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Paragraphe 1</label>
+                    <textarea name="about_paragraph1" rows="5" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors font-mono text-sm"><?php echo htmlspecialchars($settings['about_paragraph1'] ?? ''); ?></textarea>
+                </div>
+
+                <div class="space-y-4">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Paragraphe 2</label>
+                    <textarea name="about_paragraph2" rows="4" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors font-mono text-sm"><?php echo htmlspecialchars($settings['about_paragraph2'] ?? ''); ?></textarea>
+                </div>
+            </div>
+
             <!-- Liens sociaux -->
             <div class="bg-white border border-gray-100 rounded-[2rem] p-8 md:p-12 shadow-sm space-y-8">
                 <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] block">Réseaux Sociaux</span>
