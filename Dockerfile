@@ -25,4 +25,4 @@ WORKDIR /var/www/html/public
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} index.php"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} router.php"]
