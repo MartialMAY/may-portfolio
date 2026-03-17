@@ -284,6 +284,20 @@ class AdminController {
         \App\Core\ViewHelper::redirect('/admin/timeline');
     }
 
+    // --- SETTINGS ---
+    public function settings() {
+        $model = new \App\Models\SettingsModel($this->db);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            foreach ($_POST as $key => $value) {
+                $model->set($key, $value);
+            }
+            $this->logger->log('UPDATE_SETTINGS', 'SETTINGS', 'Profile settings updated');
+            \App\Core\ViewHelper::redirect('/admin/settings?saved=1');
+        }
+        $settings = $model->getAll();
+        require_once __DIR__ . '/../../views/admin/settings.php';
+    }
+
     // --- CV ---
     public function cv() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

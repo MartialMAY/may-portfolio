@@ -7,6 +7,7 @@ use App\Models\StatsModel;
 use App\Models\VeilleModel;
 use App\Models\BtsModel;
 use App\Models\TimelineModel;
+use App\Models\SettingsModel;
 
 class HomeController {
     public function index() {
@@ -28,6 +29,9 @@ class HomeController {
 
         $timelineModel = new TimelineModel($db);
         $timeline = $timelineModel->getAll() ?: [];
+
+        $settingsModel = new SettingsModel($db);
+        $settings = $settingsModel->getAll();
 
         require_once __DIR__ . '/../../views/home.php';
     }

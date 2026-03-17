@@ -181,4 +181,9 @@ $router->add('/admin/upload-ajax', function() {
     $controller->upload_ajax();
 });
 
+$router->add('/admin/settings', function() {
+    $controller = new AdminController();
+    $controller->settings();
+});
+
 $router->run();
