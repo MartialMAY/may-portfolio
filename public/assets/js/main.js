@@ -241,9 +241,9 @@ function renderHomeProjects() {
           </div>
 
           <!-- Stack Technique (Home Card) -->
-          <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100/10 opacity-0 group-hover:opacity-100 transition-all duration-700">
+          <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100/10 transition-all duration-700">
              ${(project.technologies || '').split(',').map(tech => tech.trim()).filter(t => t !== '').map(tech => `
-                <span class="px-3 py-1 bg-white/10 text-white rounded-lg text-[8px] font-black tracking-widest uppercase border border-white/10">
+                <span class="px-3 py-1 bg-gray-50 text-gray-600 rounded-lg text-[8px] font-black tracking-widest uppercase border border-gray-100 group-hover:bg-white/10 group-hover:text-white group-hover:border-white/10 transition-colors duration-500">
                     ${tech}
                 </span>
              `).join('')}

@@ -68,3 +68,19 @@
 [2026-03-11 22:31:48] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
 [2026-03-11 22:51:15] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
 [2026-03-11 23:11:44] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-12 08:22:07] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /admin
+[2026-03-12 08:22:14] IP: ::1 | User: Guest | Action: LOGIN_FAILURE | Module: AUTH | Details: Username: admin
+[2026-03-12 08:22:24] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-12 08:22:49] IP: ::1 | User: admin | Action: DELETE_PROJECT | Module: PROJECTS | Details: ID: 1
+[2026-03-12 08:22:52] IP: ::1 | User: admin | Action: DELETE_PROJECT | Module: PROJECTS | Details: ID: 2
+[2026-03-12 08:22:56] IP: ::1 | User: admin | Action: DELETE_PROJECT | Module: PROJECTS | Details: ID: 3
+[2026-03-12 08:22:59] IP: ::1 | User: admin | Action: DELETE_PROJECT | Module: PROJECTS | Details: ID: 4
+[2026-03-12 11:02:35] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /may-portfolio/public/admin/projects/edit?id=5
+[2026-03-12 11:02:37] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-12 11:03:38] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /admin/projects/edit?id=5
+[2026-03-12 11:03:43] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-12 11:05:03] IP: ::1 | User: admin | Action: UPDATE_PROJECT | Module: PROJECTS | Details: Title: YUNI AI
+[2026-03-12 11:12:29] IP: ::1 | User: admin | Action: UPDATE_BTS | Module: BTS_SIO | Details: Title: Développement de l'application Yuni AI
+[2026-03-12 16:04:49] IP: ::1 | User: Guest | Action: UNAUTHORIZED_ACCESS_ATTEMPT | Module: AUTH | Details: URI: /admin/timeline
+[2026-03-12 16:04:56] IP: ::1 | User: admin | Action: LOGIN_SUCCESS | Module: AUTH | Details: Admin logged in
+[2026-03-12 16:06:42] IP: ::1 | User: admin | Action: DELETE_BTS | Module: BTS_SIO | Details: ID: 3

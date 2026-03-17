@@ -61,12 +61,12 @@ class BtsModel {
 
         if (isset($data['id']) && !empty($data['id'])) {
             // Update
-            $query = "UPDATE bts_realisations SET title = :title, periode = :periode, type = :type, display_order = :display_order WHERE id = :id";
+            $query = "UPDATE bts_realisations SET title = :title, periode = :periode, type = :type, display_order = :display_order, project_id = :project_id WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $data['id']);
         } else {
             // Create
-            $query = "INSERT INTO bts_realisations (title, periode, type, display_order) VALUES (:title, :periode, :type, :display_order)";
+            $query = "INSERT INTO bts_realisations (title, periode, type, display_order, project_id) VALUES (:title, :periode, :type, :display_order, :project_id)";
             $stmt = $this->conn->prepare($query);
         }
 
@@ -74,6 +74,7 @@ class BtsModel {
         $stmt->bindParam(':periode', $data['periode']);
         $stmt->bindParam(':type', $data['type']);
         $stmt->bindParam(':display_order', $data['display_order']);
+        $stmt->bindValue(':project_id', !empty($data['project_id']) ? $data['project_id'] : null, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             $id = isset($data['id']) && !empty($data['id']) ? $data['id'] : $this->conn->lastInsertId();

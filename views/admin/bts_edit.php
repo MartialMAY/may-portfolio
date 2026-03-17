@@ -47,6 +47,17 @@
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Ordre d'affichage</label>
                             <input type="number" name="display_order" value="<?php echo $realisation['display_order'] ?? 0; ?>" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
                         </div>
+                        <div class="space-y-4">
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Lier à un projet du portfolio</label>
+                            <select name="project_id" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors">
+                                <option value="">-- Aucun --</option>
+                                <?php foreach ($projects as $proj): ?>
+                                    <option value="<?php echo $proj['id']; ?>" <?php echo (isset($realisation['project_id']) && $realisation['project_id'] == $proj['id']) ? 'selected' : ''; ?>>
+                                        <?php echo htmlspecialchars($proj['title']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
                     </div>
                 </div>
 

@@ -75,7 +75,16 @@
                                     <?php else: ?>
                                         <?php foreach ($filtered as $real): ?>
                                             <tr>
-                                                <td class="p-4 font-bold text-gray-800 sticky-col"><?php echo htmlspecialchars($real['title']); ?></td>
+                                                <td class="p-4 font-bold text-gray-800 sticky-col">
+                                                    <div class="flex items-center gap-3">
+                                                        <?php echo htmlspecialchars($real['title']); ?>
+                                                        <?php if (!empty($real['project_id'])): ?>
+                                                            <button onclick="openProjectModal(<?php echo $real['project_id']; ?>)" class="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all group" title="Voir le projet">
+                                                                <i data-feather="external-link" class="w-3 h-3"></i>
+                                                            </button>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </td>
                                                 <td class="text-center whitespace-nowrap text-gray-500 px-4"><?php echo htmlspecialchars($real['periode']); ?></td>
                                                 <?php foreach ($bts_competences as $comp): ?>
                                                     <td class="text-center p-0">
