@@ -136,6 +136,7 @@
     <script>
         feather.replace();
 
+        const CSRF_TOKEN = '<?php echo \App\Core\Security::generateCsrfToken(); ?>';
         const grid = document.getElementById('projects-grid');
         const saveBtn = document.getElementById('save-order-btn');
         let orderChanged = false;
@@ -160,7 +161,10 @@
 
             fetch('<?php echo url('/admin/projects/reorder'); ?>', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': CSRF_TOKEN
+                },
                 body: JSON.stringify({ ids })
             })
             .then(r => r.json())

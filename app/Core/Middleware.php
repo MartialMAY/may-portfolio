@@ -25,8 +25,10 @@ class Middleware {
      */
     public static function csrf() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $token = $_POST['csrf_token'] ?? '';
-            
+            $token = $_POST['csrf_token']
+                ?? $_SERVER['HTTP_X_CSRF_TOKEN']
+                ?? '';
+
             if (!Security::verifyCsrfToken($token)) {
                 $logger = new LoggerService();
                 $logger->log('CSRF_INVALID_TOKEN', 'SECURITY', "Referer: " . ($_SERVER['HTTP_REFERER'] ?? 'None'));
