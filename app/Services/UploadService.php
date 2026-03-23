@@ -4,7 +4,7 @@ namespace App\Services;
 class UploadService {
     private $targetDir;
     private $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'];
-    private $maxSize = 5 * 1024 * 1024; // 5MB
+    private $maxSize = 10 * 1024 * 1024; // 10MB
 
     public function __construct($subDir = 'uploads') {
         $this->targetDir = __DIR__ . '/../../public/' . $subDir . '/';
