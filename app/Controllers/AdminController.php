@@ -135,6 +135,25 @@ class AdminController {
         exit;
     }
 
+    public function project_reorder() {
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            echo json_encode(['success' => false]);
+            exit;
+        }
+        $body = json_decode(file_get_contents('php://input'), true);
+        $ids = $body['ids'] ?? [];
+        if (empty($ids)) {
+            echo json_encode(['success' => false, 'message' => 'No ids']);
+            exit;
+        }
+        $model = new ProjectModel($this->db);
+        $model->updateOrder($ids);
+        $this->logger->log('REORDER_PROJECTS', 'PROJECTS', 'New order: ' . implode(',', $ids));
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
     public function project_delete() {
         $id = $_GET['id'] ?? null;
         if ($id) {

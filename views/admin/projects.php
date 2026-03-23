@@ -6,11 +6,16 @@
     <title>Gestion Projets | Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .display-title { font-family: 'Space Grotesk', sans-serif; }
         .sidebar-link.active { background: black; color: white; }
+        .project-card { cursor: grab; }
+        .project-card:active { cursor: grabbing; }
+        .sortable-ghost { opacity: 0.4; }
+        .sortable-drag { opacity: 1; box-shadow: 0 20px 60px rgba(0,0,0,0.15); transform: rotate(1deg); }
     </style>
 </head>
 <body class="bg-[#f8f8f8]">
@@ -69,20 +74,46 @@
                 <div>
                     <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Management</span>
                     <h2 class="display-title text-5xl font-extrabold uppercase tracking-tighter">Mes Projets</h2>
+                    <p class="text-gray-400 text-sm mt-2 flex items-center gap-2">
+                        <i data-feather="move" class="w-3 h-3"></i>
+                        Glissez-déposez les cartes pour changer l'ordre d'affichage
+                    </p>
                 </div>
-                <a href="<?php echo url('/admin/projects/add'); ?>" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
-                    <i data-feather="plus" class="w-4 h-4"></i> Ajouter un projet
-                </a>
+                <div class="flex items-center gap-4">
+                    <!-- Save order button (hidden by default) -->
+                    <button id="save-order-btn" onclick="saveOrder()" class="hidden bg-green-500 text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-green-600 transition-all flex items-center gap-3">
+                        <i data-feather="check" class="w-4 h-4"></i> Sauvegarder l'ordre
+                    </button>
+                    <a href="<?php echo url('/admin/projects/add'); ?>" class="bg-black text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-gray-800 transition-all flex items-center gap-3">
+                        <i data-feather="plus" class="w-4 h-4"></i> Ajouter un projet
+                    </a>
+                </div>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Toast notification -->
+            <div id="toast" class="fixed bottom-8 right-8 z-50 hidden">
+                <div id="toast-inner" class="px-6 py-4 rounded-2xl text-sm font-bold text-white shadow-xl flex items-center gap-3">
+                    <i id="toast-icon" class="w-4 h-4"></i>
+                    <span id="toast-msg"></span>
+                </div>
+            </div>
+
+            <div id="projects-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($projects as $proj): ?>
-                    <div class="bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm group">
-                        <div class="h-48 overflow-hidden bg-gray-100 flex items-center justify-center text-gray-400">
-                            <?php 
+                    <div class="project-card bg-white border border-gray-100 rounded-[2rem] overflow-hidden shadow-sm group transition-all hover:shadow-md"
+                         data-id="<?php echo $proj['id']; ?>">
+                        <!-- Drag handle indicator -->
+                        <div class="flex items-center justify-between px-6 pt-4 pb-0">
+                            <span class="text-[9px] font-bold uppercase tracking-widest text-gray-300 flex items-center gap-1">
+                                <i data-feather="menu" class="w-3 h-3"></i> Glisser pour réordonner
+                            </span>
+                            <span class="text-[9px] font-bold text-gray-200">#<?php echo $proj['id']; ?></span>
+                        </div>
+                        <div class="h-48 overflow-hidden bg-gray-100 flex items-center justify-center text-gray-400 mx-4 mt-2 rounded-2xl">
+                            <?php
                             $img_url = $proj['cover_image'] ?: explode('|', explode(',', $proj['image_url'])[0])[0];
                             ?>
-                            <img src="<?php echo url(trim($img_url)); ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/400x300?text=Indisponible'">
+                            <img src="<?php echo url(trim($img_url)); ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl" onerror="this.src='https://placehold.co/400x300?text=Indisponible'">
                         </div>
                         <div class="p-8">
                             <span class="text-[9px] font-bold uppercase tracking-widest text-blue-600 block mb-2"><?php echo $proj['category']; ?></span>
@@ -104,6 +135,70 @@
 
     <script>
         feather.replace();
+
+        const grid = document.getElementById('projects-grid');
+        const saveBtn = document.getElementById('save-order-btn');
+        let orderChanged = false;
+
+        const sortable = Sortable.create(grid, {
+            animation: 200,
+            ghostClass: 'sortable-ghost',
+            dragClass: 'sortable-drag',
+            onEnd: function() {
+                orderChanged = true;
+                saveBtn.classList.remove('hidden');
+                feather.replace();
+            }
+        });
+
+        function saveOrder() {
+            const cards = grid.querySelectorAll('.project-card');
+            const ids = Array.from(cards).map(c => parseInt(c.dataset.id));
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Sauvegarde...';
+
+            fetch('<?php echo url('/admin/projects/reorder'); ?>', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Ordre sauvegardé !', 'check', 'bg-green-500');
+                    saveBtn.classList.add('hidden');
+                    orderChanged = false;
+                } else {
+                    showToast('Erreur lors de la sauvegarde', 'x', 'bg-red-500');
+                }
+            })
+            .catch(() => showToast('Erreur réseau', 'x', 'bg-red-500'))
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i data-feather="check" class="w-4 h-4"></i> Sauvegarder l\'ordre';
+                feather.replace();
+            });
+        }
+
+        function showToast(msg, icon, colorClass) {
+            const toast = document.getElementById('toast');
+            const inner = document.getElementById('toast-inner');
+            const iconEl = document.getElementById('toast-icon');
+            document.getElementById('toast-msg').textContent = msg;
+            inner.className = `px-6 py-4 rounded-2xl text-sm font-bold text-white shadow-xl flex items-center gap-3 ${colorClass}`;
+            iconEl.setAttribute('data-feather', icon);
+            feather.replace();
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        window.addEventListener('beforeunload', function(e) {
+            if (orderChanged) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
     </script>
 </body>
 </html>

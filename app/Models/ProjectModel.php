@@ -15,10 +15,20 @@ class ProjectModel {
         if ($this->conn === null) {
             return [];
         }
-        $query = "SELECT * FROM " . $this->table_name . " ORDER BY created_at DESC";
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY display_order ASC, created_at DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateOrder(array $orderedIds) {
+        if ($this->conn === null) return false;
+        $query = "UPDATE " . $this->table_name . " SET display_order = :order WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        foreach ($orderedIds as $position => $id) {
+            $stmt->execute([':order' => $position + 1, ':id' => (int)$id]);
+        }
+        return true;
     }
 
     public function getById($id) {

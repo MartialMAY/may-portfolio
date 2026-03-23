@@ -99,6 +99,10 @@ $router->add('/admin/projects/delete', function() {
     $controller = new AdminController();
     $controller->project_delete();
 });
+$router->add('/admin/projects/reorder', function() {
+    $controller = new AdminController();
+    $controller->project_reorder();
+});
 
 // Admin Veille
 $router->add('/admin/veille', function() {
