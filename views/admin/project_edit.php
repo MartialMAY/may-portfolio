@@ -157,7 +157,7 @@
                                                 
                                                 <label class="cursor-pointer bg-white border border-gray-100 p-3 rounded-lg hover:border-blue-500 transition-all flex items-center justify-center group/upload" title="Uploader une image">
                                                     <i data-feather="upload" class="w-4 h-4 text-gray-400 group-hover/upload:text-blue-500"></i>
-                                                    <input type="file" class="hidden" accept="image/*" onchange="uploadImage(${index}, this)">
+                                                    <input type="file" class="hidden" accept="image/*,image/gif" onchange="uploadImage(${index}, this)">
                                                 </label>
                                             </div>
                                             
@@ -175,6 +175,31 @@
                                 feather.replace();
                                 updateFinalValue();
                                 renderPreview();
+
+                                // Drag & drop + paste on each row
+                                container.querySelectorAll('.group').forEach((row, index) => {
+                                    row.addEventListener('dragover', e => { e.preventDefault(); row.classList.add('border-blue-400', 'bg-blue-50'); });
+                                    row.addEventListener('dragleave', () => row.classList.remove('border-blue-400', 'bg-blue-50'));
+                                    row.addEventListener('drop', e => {
+                                        e.preventDefault();
+                                        row.classList.remove('border-blue-400', 'bg-blue-50');
+                                        const file = e.dataTransfer.files[0];
+                                        if (file && file.type.startsWith('image/')) uploadFileToIndex(index, file, row);
+                                    });
+                                    const urlInput = row.querySelector('input[type="text"]');
+                                    if (urlInput) {
+                                        urlInput.addEventListener('paste', e => {
+                                            const items = e.clipboardData.items;
+                                            for (const item of items) {
+                                                if (item.type.startsWith('image/')) {
+                                                    e.preventDefault();
+                                                    uploadFileToIndex(index, item.getAsFile(), row);
+                                                    return;
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
                             }
 
                             function moveUp(index) {
@@ -195,84 +220,54 @@
                                 }
                             }
 
-                            async function uploadImage(index, input) {
-                                if (!input.files || !input.files[0]) return;
-                                
-                                const file = input.files[0];
+                            async function doUpload(file) {
                                 const formData = new FormData();
                                 formData.append('file', file);
-                                
-                                // Get CSRF token from the form
                                 const csrfToken = document.querySelector('input[name="csrf_token"]').value;
-                                if (csrfToken) {
-                                    formData.append('csrf_token', csrfToken);
+                                if (csrfToken) formData.append('csrf_token', csrfToken);
+                                const response = await fetch('<?php echo url("/admin/upload-ajax"); ?>', { method: 'POST', body: formData });
+                                const contentType = response.headers.get("content-type");
+                                if (contentType && contentType.includes("application/json")) {
+                                    return await response.json();
                                 }
-                                
-                                // Visual feedback
+                                throw new Error(await response.text());
+                            }
+
+                            async function uploadImage(index, input) {
+                                if (!input.files || !input.files[0]) return;
                                 const row = input.closest('.group');
                                 row.classList.add('opacity-50', 'pointer-events-none');
-                                
                                 try {
-                                    const response = await fetch('<?php echo url("/admin/upload-ajax"); ?>', {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-                                    
-                                    // Check if response is JSON
-                                    const contentType = response.headers.get("content-type");
-                                    if (contentType && contentType.indexOf("application/json") !== -1) {
-                                        const result = await response.json();
-                                        if (result.success) {
-                                            updateData(index, 'url', result.url);
-                                            renderRepeater();
-                                        } else {
-                                            alert("Erreur Serveur: " + result.message);
-                                        }
-                                    } else {
-                                        // Handle non-JSON response (like CSRF error message)
-                                        const text = await response.text();
-                                        throw new Error(text);
-                                    }
-                                } catch (error) {
-                                    console.error("Upload error:", error);
-                                    alert("Erreur: " + error.message);
-                                } finally {
-                                    row.classList.remove('opacity-50', 'pointer-events-none');
-                                }
+                                    const result = await doUpload(input.files[0]);
+                                    if (result.success) { updateData(index, 'url', result.url); renderRepeater(); }
+                                    else alert("Erreur: " + result.message);
+                                } catch(e) { alert("Erreur: " + e.message); }
+                                finally { row.classList.remove('opacity-50', 'pointer-events-none'); }
+                            }
+
+                            async function uploadFileToIndex(index, file, rowEl) {
+                                if (rowEl) rowEl.classList.add('opacity-50', 'pointer-events-none');
+                                try {
+                                    const result = await doUpload(file);
+                                    if (result.success) { updateData(index, 'url', result.url); renderRepeater(); }
+                                    else alert("Erreur: " + result.message);
+                                } catch(e) { alert("Erreur: " + e.message); }
+                                finally { if (rowEl) rowEl.classList.remove('opacity-50', 'pointer-events-none'); }
                             }
 
                             async function uploadCover(input) {
-                                if (!input.files || !input.files[0]) return;
-                                
-                                const file = input.files[0];
-                                const formData = new FormData();
-                                formData.append('file', file);
-                                
-                                const csrfToken = document.querySelector('input[name="csrf_token"]').value;
-                                if (csrfToken) formData.append('csrf_token', csrfToken);
-                                
+                                const file = input && input.files ? input.files[0] : input;
+                                if (!file) return;
                                 const previewContainer = document.getElementById('cover-preview');
                                 previewContainer.classList.add('opacity-50');
-                                
                                 try {
-                                    const response = await fetch('<?php echo url("/admin/upload-ajax"); ?>', {
-                                        method: 'POST',
-                                        body: formData
-                                    });
-                                    const result = await response.json();
-                                    
+                                    const result = await doUpload(file);
                                     if (result.success) {
                                         document.getElementById('cover_image_input').value = result.url;
                                         previewContainer.querySelector('img').src = result.url;
-                                    } else {
-                                        alert("Erreur: " + result.message);
-                                    }
-                                } catch (error) {
-                                    console.error("Upload error:", error);
-                                    alert("Erreur lors du téléchargement.");
-                                } finally {
-                                    previewContainer.classList.remove('opacity-50');
-                                }
+                                    } else alert("Erreur: " + result.message);
+                                } catch(e) { alert("Erreur: " + e.message); }
+                                finally { previewContainer.classList.remove('opacity-50'); }
                             }
 
                             function addImageRow() {
@@ -369,10 +364,33 @@
                                 });
                             }
 
-                            // Rendu global
+                            // Drag & drop + paste on cover
                             document.addEventListener('DOMContentLoaded', () => {
                                 renderRepeater();
                                 renderBadges();
+
+                                const coverPreview = document.getElementById('cover-preview');
+                                const coverInput = document.getElementById('cover_image_input');
+
+                                coverPreview.addEventListener('dragover', e => { e.preventDefault(); coverPreview.classList.add('border-blue-400', 'bg-blue-50'); });
+                                coverPreview.addEventListener('dragleave', () => coverPreview.classList.remove('border-blue-400', 'bg-blue-50'));
+                                coverPreview.addEventListener('drop', e => {
+                                    e.preventDefault();
+                                    coverPreview.classList.remove('border-blue-400', 'bg-blue-50');
+                                    const file = e.dataTransfer.files[0];
+                                    if (file && file.type.startsWith('image/')) uploadCover(file);
+                                });
+
+                                coverInput.addEventListener('paste', e => {
+                                    const items = e.clipboardData.items;
+                                    for (const item of items) {
+                                        if (item.type.startsWith('image/')) {
+                                            e.preventDefault();
+                                            uploadCover(item.getAsFile());
+                                            return;
+                                        }
+                                    }
+                                });
                             });
                         </script>
                     </div>
