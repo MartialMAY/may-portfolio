@@ -23,8 +23,8 @@ RUN mkdir -p /var/www/html/public/uploads/projects \
 
 WORKDIR /var/www/html/public
 
-# Disable PHP error display in production
-RUN echo "display_errors=Off\nerror_reporting=E_ALL\nlog_errors=On" > /usr/local/etc/php/conf.d/production.ini
+# PHP production config
+RUN printf "display_errors=Off\nerror_reporting=E_ALL\nlog_errors=On\nupload_max_filesize=20M\npost_max_size=25M\nmemory_limit=256M\n" > /usr/local/etc/php/conf.d/production.ini
 
 EXPOSE 8080
 
