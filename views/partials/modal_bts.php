@@ -11,6 +11,12 @@
             <i data-feather="x"></i>
         </button>
         
+        <!-- Popover sous-compétences (injecté par JS) -->
+        <div id="bts-sous-popup" class="bts-sous-popup hidden" role="tooltip" aria-hidden="true">
+            <div id="bts-sous-popup-header" class="bts-sous-popup-header"></div>
+            <ul id="bts-sous-popup-list" class="bts-sous-popup-list"></ul>
+        </div>
+
         <!-- Contenu scrollable -->
         <div class="overflow-y-auto overscroll-contain p-6 md:p-12 h-full rounded-[2rem]" data-lenis-prevent>
             <div class="space-y-16 py-10">
@@ -86,10 +92,26 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-center whitespace-nowrap text-gray-500 px-4"><?php echo htmlspecialchars($real['periode']); ?></td>
-                                                <?php foreach ($bts_competences as $comp): ?>
-                                                    <td class="text-center p-0">
-                                                        <?php if (in_array($comp['id'], $real['competence_ids'])): ?>
-                                                            <div class="flex items-center justify-center text-blue-600">
+                                                <?php foreach ($bts_competences as $comp):
+                                                    $hasComp = in_array($comp['id'], $real['competence_ids']);
+                                                    $compSous = $bts_sous_competences[$comp['id']] ?? [];
+                                                    $sousData = [];
+                                                    foreach ($compSous as $sc) {
+                                                        $sousData[] = [
+                                                            'id' => $sc['id'],
+                                                            'label' => $sc['label'],
+                                                            'checked' => in_array((string)$sc['id'], array_map('strval', $real['sous_competence_ids']))
+                                                        ];
+                                                    }
+                                                    $sousJson = htmlspecialchars(json_encode($sousData, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
+                                                ?>
+                                                    <td class="text-center p-0 <?php echo ($hasComp && !empty($sousData)) ? 'bts-cell-comp' : ''; ?>"
+                                                        <?php if ($hasComp && !empty($sousData)): ?>
+                                                            data-sous-comps="<?php echo $sousJson; ?>"
+                                                            data-comp-label="<?php echo htmlspecialchars($comp['label'], ENT_QUOTES); ?>"
+                                                        <?php endif; ?>>
+                                                        <?php if ($hasComp): ?>
+                                                            <div class="flex items-center justify-center text-blue-600 bts-check-icon">
                                                                 <i data-feather="check" class="w-4 h-4"></i>
                                                             </div>
                                                         <?php endif; ?>

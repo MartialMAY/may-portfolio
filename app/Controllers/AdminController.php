@@ -67,12 +67,13 @@ class AdminController {
                 'display_order' => $_POST['display_order'] ?? 0,
                 'project_id' => $_POST['project_id'] ?? null
             ];
-            if ($btsModel->save($data, $_POST['competences'] ?? [])) {
+            if ($btsModel->save($data, $_POST['competences'] ?? [], $_POST['sous_competences'] ?? [])) {
                 $this->logger->log($id ? 'UPDATE_BTS' : 'CREATE_BTS', 'BTS_SIO', "Title: " . $data['title']);
                 \App\Core\ViewHelper::redirect('/admin');
             }
         }
         $competences = $btsModel->getCompetences();
+        $sous_competences = $btsModel->getSousCompetences();
         $projects = (new ProjectModel($this->db))->getAll();
         require_once __DIR__ . '/../../views/admin/bts_edit.php';
     }

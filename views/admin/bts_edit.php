@@ -62,18 +62,52 @@
                 </div>
 
                 <div class="pt-8 border-t border-gray-100">
-                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-6 block">Compétences mises en œuvre</span>
-                    <div class="space-y-4">
-                        <?php foreach ($competences as $comp): ?>
-                            <label class="flex items-start gap-4 p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-gray-100 transition-colors">
-                                <input type="checkbox" name="competences[]" value="<?php echo $comp['id']; ?>" 
-                                    <?php echo (isset($realisation['competence_ids']) && in_array($comp['id'], $realisation['competence_ids'])) ? 'checked' : ''; ?>
-                                    class="mt-1 w-5 h-5 accent-blue-600">
-                                <div>
-                                    <span class="block text-sm font-bold uppercase tracking-tight"><?php echo htmlspecialchars($comp['label']); ?></span>
-                                    <span class="block text-[10px] text-gray-400 mt-1 leading-relaxed"><?php echo htmlspecialchars($comp['description']); ?></span>
-                                </div>
-                            </label>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-[0.3em] mb-2 block">Compétences mises en œuvre</span>
+                    <p class="text-[10px] text-gray-400 mb-6">Cochez la compétence principale, puis précisez les sous-compétences développées.</p>
+                    <div class="space-y-3">
+                        <?php foreach ($competences as $comp):
+                            $isChecked = isset($realisation['competence_ids']) && in_array($comp['id'], $realisation['competence_ids']);
+                            $compSous = $sous_competences[$comp['id']] ?? [];
+                        ?>
+                            <div class="bts-comp-block border border-gray-100 rounded-2xl overflow-hidden">
+                                <!-- Compétence principale -->
+                                <label class="flex items-start gap-4 p-4 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
+                                       onclick="toggleSousComps(this)">
+                                    <input type="checkbox" name="competences[]" value="<?php echo $comp['id']; ?>"
+                                        <?php echo $isChecked ? 'checked' : ''; ?>
+                                        class="mt-1 w-5 h-5 accent-blue-600 shrink-0 comp-main-checkbox">
+                                    <div class="flex-1 min-w-0">
+                                        <span class="block text-sm font-bold uppercase tracking-tight"><?php echo htmlspecialchars($comp['label']); ?></span>
+                                        <?php if (!empty($compSous)): ?>
+                                            <span class="block text-[10px] text-blue-500 mt-1"><?php echo count($compSous); ?> sous-compétence<?php echo count($compSous) > 1 ? 's' : ''; ?> — cliquez pour détailler</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <?php if (!empty($compSous)): ?>
+                                        <i data-feather="chevron-down" class="w-4 h-4 text-gray-400 mt-1 shrink-0 comp-chevron transition-transform duration-200"></i>
+                                    <?php endif; ?>
+                                </label>
+
+                                <!-- Sous-compétences (accordéon) -->
+                                <?php if (!empty($compSous)): ?>
+                                    <div class="sous-comps-panel <?php echo $isChecked ? '' : 'hidden'; ?> bg-white border-t border-gray-100">
+                                        <div class="px-4 py-3 space-y-2">
+                                            <p class="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-3">Précisez les sous-compétences développées :</p>
+                                            <?php foreach ($compSous as $sc):
+                                                $scChecked = isset($realisation['sous_competence_ids']) && in_array($sc['id'], $realisation['sous_competence_ids']);
+                                            ?>
+                                                <label class="flex items-start gap-3 p-3 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors group">
+                                                    <input type="checkbox" name="sous_competences[]" value="<?php echo $sc['id']; ?>"
+                                                        <?php echo $scChecked ? 'checked' : ''; ?>
+                                                        class="mt-0.5 w-4 h-4 accent-blue-600 shrink-0">
+                                                    <span class="text-[11px] text-gray-600 group-hover:text-blue-700 transition-colors leading-relaxed">
+                                                        <?php echo htmlspecialchars($sc['label']); ?>
+                                                    </span>
+                                                </label>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -89,6 +123,36 @@
 
     <script>
         feather.replace();
+
+        function toggleSousComps(labelEl) {
+            const block = labelEl.closest('.bts-comp-block');
+            const checkbox = labelEl.querySelector('.comp-main-checkbox');
+            const panel = block.querySelector('.sous-comps-panel');
+            const chevron = labelEl.querySelector('.comp-chevron');
+
+            // Wait for the checkbox to update its state
+            setTimeout(() => {
+                if (!panel) return;
+                if (checkbox.checked) {
+                    panel.classList.remove('hidden');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+                } else {
+                    panel.classList.add('hidden');
+                    if (chevron) chevron.style.transform = '';
+                    // Uncheck all sous-compétences when parent is unchecked
+                    panel.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                }
+            }, 0);
+        }
+
+        // Initialize chevrons on page load
+        document.querySelectorAll('.bts-comp-block').forEach(block => {
+            const checkbox = block.querySelector('.comp-main-checkbox');
+            const chevron = block.querySelector('.comp-chevron');
+            if (checkbox && chevron && checkbox.checked) {
+                chevron.style.transform = 'rotate(180deg)';
+            }
+        });
     </script>
 </body>
 </html>

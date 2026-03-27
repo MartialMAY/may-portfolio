@@ -26,6 +26,7 @@ class HomeController {
         $btsModel = new BtsModel($db);
         $bts_competences = $btsModel->getCompetences() ?: [];
         $bts_realisations = $btsModel->getRealisations() ?: [];
+        $bts_sous_competences = $btsModel->getSousCompetences() ?: [];
 
         $timelineModel = new TimelineModel($db);
         $timeline = $timelineModel->getAll() ?: [];
