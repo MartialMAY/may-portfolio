@@ -803,6 +803,7 @@ if (btsModal && btsBtn && btsClose) {
 
   function closeBtsModal() {
     enableScroll();
+    btsPanelClose();
     btsModal.classList.add('opacity-0');
     const inner = btsModal.querySelector('.scale-100');
     if (inner) {
@@ -818,15 +819,54 @@ if (btsModal && btsBtn && btsClose) {
   });
 }
 
-// BTS Sous-compétences — dropdown inline
+// BTS Sous-compétences — panneau latéral
 function btsCellToggle(cell) {
-  const isOpen = cell.classList.contains('open');
-  // Fermer tous les autres dropdowns ouverts dans le même tableau
-  const table = cell.closest('.bts-table');
-  if (table) {
-    table.querySelectorAll('.bts-cell-comp.open').forEach(c => {
-      if (c !== cell) c.classList.remove('open');
-    });
+  const panel = document.getElementById('bts-detail-panel');
+  if (!panel) return;
+
+  // Reclique sur la même cellule active → fermer
+  if (cell.classList.contains('active')) {
+    btsPanelClose();
+    return;
   }
-  cell.classList.toggle('open', !isOpen);
+
+  const details = JSON.parse(cell.dataset.details || '{}');
+
+  // En-tête
+  document.getElementById('bts-panel-comp').textContent = details.comp || '';
+  document.getElementById('bts-panel-real').textContent = details.real || '';
+
+  // Cartes de sous-compétences
+  const body = document.getElementById('bts-panel-body');
+  body.innerHTML = '';
+  (details.items || []).forEach(function(item) {
+    const card = document.createElement('div');
+    card.className = 'bts-panel-card';
+
+    const labelEl = document.createElement('p');
+    labelEl.className = 'bts-panel-card-label';
+    labelEl.textContent = item.label;
+    card.appendChild(labelEl);
+
+    if (item.justif) {
+      const justifEl = document.createElement('p');
+      justifEl.className = 'bts-panel-card-justif';
+      justifEl.textContent = item.justif;
+      card.appendChild(justifEl);
+    }
+    body.appendChild(card);
+  });
+
+  // Marquer la cellule active
+  document.querySelectorAll('.bts-cell-comp').forEach(function(c) { c.classList.remove('active'); });
+  cell.classList.add('active');
+
+  // Afficher le panneau
+  panel.classList.remove('translate-x-full');
+}
+
+function btsPanelClose() {
+  const panel = document.getElementById('bts-detail-panel');
+  if (panel) panel.classList.add('translate-x-full');
+  document.querySelectorAll('.bts-cell-comp').forEach(function(c) { c.classList.remove('active'); });
 }

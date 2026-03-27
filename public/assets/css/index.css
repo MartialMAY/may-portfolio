@@ -478,70 +478,67 @@ body {
   padding: 10px 8px 6px;
 }
 
-.bts-chevron {
-  transition: transform 0.22s ease;
+/* --- Badge sous-compétences dans la cellule --- */
+.bts-sc-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
   flex-shrink: 0;
 }
 
-.bts-cell-comp.open .bts-chevron {
-  transform: rotate(180deg);
+.bts-cell-comp {
+  cursor: pointer;
+  transition: background 0.15s;
 }
 
-/* --- Dropdown inline --- */
-.bts-dropdown {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.28s ease, opacity 0.22s ease;
-  opacity: 0;
-  width: 100%;
+.bts-cell-comp:hover {
+  background: #eff6ff;
 }
 
-.bts-cell-comp.open .bts-dropdown {
-  max-height: 300px;
-  opacity: 1;
+.bts-cell-comp.active {
+  background: #dbeafe;
 }
 
-.bts-dropdown-list {
-  list-style: none;
-  margin: 0;
-  padding: 6px 10px 10px;
-  text-align: left;
-  border-top: 1px solid #dbeafe;
+/* --- Panneau latéral --- */
+#bts-detail-panel .bts-panel-card {
+  background: #f0f7ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 16px;
+  padding: 14px 16px;
 }
 
-.bts-dropdown-list li {
-  font-size: 12px;
-  line-height: 1.5;
+#bts-detail-panel .bts-panel-card-label {
+  font-size: 13px;
+  font-weight: 700;
   color: #1e40af;
-  font-weight: 500;
-  padding: 4px 2px;
+  line-height: 1.4;
   display: flex;
   align-items: flex-start;
-  gap: 6px;
+  gap: 8px;
 }
 
-.bts-dropdown-list li::before {
+#bts-detail-panel .bts-panel-card-label::before {
   content: "✓";
   color: #2563eb;
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: 800;
+  font-size: 14px;
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
-.bts-sc-label {
-  display: block;
+#bts-detail-panel .bts-panel-card-justif {
   font-size: 12px;
-  font-weight: 600;
-  color: #1e40af;
-  line-height: 1.4;
-}
-
-.bts-sc-justif {
-  display: block;
-  font-size: 10px;
-  font-weight: 400;
-  color: #6b7280;
-  margin-top: 2px;
-  line-height: 1.4;
-  font-style: italic;
+  color: #4b5563;
+  line-height: 1.6;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #bfdbfe;
 }

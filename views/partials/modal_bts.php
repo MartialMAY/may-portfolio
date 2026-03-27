@@ -11,6 +11,25 @@
             <i data-feather="x"></i>
         </button>
         
+        <!-- Panneau latéral détail sous-compétences -->
+        <div id="bts-detail-panel" class="absolute right-0 top-0 h-full w-full md:w-[400px] bg-white border-l border-gray-100 rounded-r-[2rem] flex flex-col z-30 translate-x-full transition-transform duration-300 ease-in-out shadow-2xl">
+            <div class="flex items-start justify-between p-6 border-b border-gray-100 shrink-0">
+                <div class="flex-1 min-w-0 pr-4">
+                    <span id="bts-panel-comp" class="block text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600 mb-1 truncate"></span>
+                    <span id="bts-panel-real" class="block text-sm font-bold text-gray-800 leading-snug"></span>
+                </div>
+                <button onclick="btsPanelClose()" class="shrink-0 w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-black hover:text-white transition-colors">
+                    <i data-feather="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+            <div id="bts-panel-body" class="flex-1 overflow-y-auto p-6 space-y-3">
+                <!-- Cartes injectées par JS -->
+            </div>
+            <div class="shrink-0 px-6 pb-6">
+                <p class="text-[10px] text-gray-300 uppercase tracking-widest text-center">Cliquez une autre cellule ou fermez</p>
+            </div>
+        </div>
+
         <!-- Contenu scrollable -->
         <div class="overflow-y-auto overscroll-contain p-4 md:p-8 h-full rounded-[2rem]" data-lenis-prevent>
             <div class="space-y-16 py-10">
@@ -100,29 +119,22 @@
                                                         }
                                                     }
                                                     $hasCheckedSous = $hasComp && !empty($checkedSous);
+                                                    $detailsJson = $hasCheckedSous ? htmlspecialchars(json_encode([
+                                                        'comp' => $comp['label'],
+                                                        'real' => $real['title'],
+                                                        'items' => $checkedSous
+                                                    ]), ENT_QUOTES) : '';
                                                 ?>
-                                                    <td class="bts-cell-td <?php echo $hasCheckedSous ? 'bts-cell-comp' : ''; ?>" onclick="<?php echo $hasCheckedSous ? 'btsCellToggle(this)' : ''; ?>">
+                                                    <td class="bts-cell-td <?php echo $hasCheckedSous ? 'bts-cell-comp' : ''; ?>"
+                                                        <?php if ($hasCheckedSous): ?>
+                                                            data-details="<?php echo $detailsJson; ?>"
+                                                            onclick="btsCellToggle(this)"
+                                                        <?php endif; ?>>
                                                         <?php if ($hasComp): ?>
                                                             <div class="bts-cell-inner">
-                                                                <div class="bts-check-row">
-                                                                    <i data-feather="check" class="w-5 h-5 text-blue-600"></i>
-                                                                    <?php if ($hasCheckedSous): ?>
-                                                                        <i data-feather="chevron-down" class="bts-chevron w-4 h-4 text-blue-400"></i>
-                                                                    <?php endif; ?>
-                                                                </div>
+                                                                <i data-feather="check" class="w-5 h-5 text-blue-600"></i>
                                                                 <?php if ($hasCheckedSous): ?>
-                                                                    <div class="bts-dropdown">
-                                                                        <ul class="bts-dropdown-list">
-                                                                            <?php foreach ($checkedSous as $sc): ?>
-                                                                                <li>
-                                                                                    <span class="bts-sc-label"><?php echo htmlspecialchars($sc['label']); ?></span>
-                                                                                    <?php if (!empty($sc['justif'])): ?>
-                                                                                        <span class="bts-sc-justif"><?php echo htmlspecialchars($sc['justif']); ?></span>
-                                                                                    <?php endif; ?>
-                                                                                </li>
-                                                                            <?php endforeach; ?>
-                                                                        </ul>
-                                                                    </div>
+                                                                    <span class="bts-sc-badge"><?php echo count($checkedSous); ?></span>
                                                                 <?php endif; ?>
                                                             </div>
                                                         <?php endif; ?>
