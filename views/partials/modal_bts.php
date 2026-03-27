@@ -2,9 +2,9 @@
     Modal BTS SIO - Tableau de synthèse E4 
     Présentation du tableau de synthèse des réalisations professionnelles.
 -->
-<div id="bts-modal" class="fixed inset-0 z-[100] flex items-center justify-center px-4 hidden opacity-0 transition-opacity duration-300">
+<div id="bts-modal" class="fixed inset-0 z-[100] flex items-center justify-center px-2 hidden opacity-0 transition-opacity duration-300">
     <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
-    <div class="relative bg-white w-full max-w-7xl max-h-[95vh] flex flex-col rounded-[2rem] shadow-2xl scale-95 opacity-0 transition-all duration-300">
+    <div class="relative bg-white w-full max-w-[98vw] max-h-[95vh] flex flex-col rounded-[2rem] shadow-2xl scale-95 opacity-0 transition-all duration-300">
         
         <!-- Bouton de fermeture -->
         <button id="bts-close" class="absolute top-6 right-6 md:top-8 md:right-8 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-black hover:text-white transition-colors z-20">
@@ -12,7 +12,7 @@
         </button>
         
         <!-- Contenu scrollable -->
-        <div class="overflow-y-auto overscroll-contain p-6 md:p-12 h-full rounded-[2rem]" data-lenis-prevent>
+        <div class="overflow-y-auto overscroll-contain p-4 md:p-8 h-full rounded-[2rem]" data-lenis-prevent>
             <div class="space-y-16 py-10">
                 <div>
                     <!-- En-tête avec bouton de téléchargement -->
@@ -102,9 +102,9 @@
                                                         <?php if ($hasComp): ?>
                                                             <div class="bts-cell-inner">
                                                                 <div class="bts-check-row">
-                                                                    <i data-feather="check" class="w-4 h-4 text-blue-600"></i>
+                                                                    <i data-feather="check" class="w-5 h-5 text-blue-600"></i>
                                                                     <?php if ($hasCheckedSous): ?>
-                                                                        <i data-feather="chevron-down" class="bts-chevron w-3 h-3 text-gray-400"></i>
+                                                                        <i data-feather="chevron-down" class="bts-chevron w-4 h-4 text-blue-400"></i>
                                                                     <?php endif; ?>
                                                                 </div>
                                                                 <?php if ($hasCheckedSous): ?>
