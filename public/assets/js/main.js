@@ -214,7 +214,7 @@ if (timelineContainer && timelineTabs.length > 0) {
 function renderHomeProjects() {
   const projectsGrid = document.getElementById('projects-grid');
   if (projectsGrid) {
-    projectsGrid.innerHTML = PROJECTS.slice(0, 4).map((project, idx) => `
+    projectsGrid.innerHTML = PROJECTS.slice(0, 6).map((project, idx) => `
         <div class="group cursor-pointer bg-white/40 backdrop-blur-sm border border-gray-100 rounded-[2rem] p-6 md:p-8 space-y-8 hover:bg-black transition-all duration-700 fade-in-up shadow-sm hover:shadow-2xl" onclick="openProjectModal('${project.id}')" style="transition-delay: ${idx * 100}ms">
           <!-- Image Wrapper -->
           <div class="aspect-[16/10] overflow-hidden rounded-[1.5rem] bg-gray-100 border border-gray-100 relative">
