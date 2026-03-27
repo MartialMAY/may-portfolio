@@ -22,7 +22,7 @@
                     <i data-feather="x" class="w-4 h-4"></i>
                 </button>
             </div>
-            <div id="bts-panel-body" class="flex-1 overflow-y-auto p-6 space-y-3">
+            <div id="bts-panel-body" class="flex-1 overflow-y-auto p-6 space-y-3" data-lenis-prevent>
                 <!-- Cartes injectées par JS -->
             </div>
             <div class="shrink-0 px-6 pb-6">
