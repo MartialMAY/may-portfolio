@@ -818,96 +818,15 @@ if (btsModal && btsBtn && btsClose) {
   });
 }
 
-// BTS Sous-compétences popover
-(function () {
-  const popup = document.getElementById('bts-sous-popup');
-  const popupHeader = document.getElementById('bts-sous-popup-header');
-  const popupList = document.getElementById('bts-sous-popup-list');
-  if (!popup || !popupHeader || !popupList) return;
-
-  let hideTimer = null;
-  let activeCell = null;
-
-  const SVG_CHECK = `<svg class="sc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
-  const SVG_CIRCLE = `<svg class="sc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/></svg>`;
-
-  function showPopup(cell) {
-    clearTimeout(hideTimer);
-    if (activeCell === cell && popup.classList.contains('visible')) return;
-    activeCell = cell;
-
-    const sousData = JSON.parse(cell.getAttribute('data-sous-comps') || '[]');
-    const compLabel = cell.getAttribute('data-comp-label') || '';
-    if (!sousData.length) return;
-
-    popupHeader.textContent = compLabel;
-    popupList.innerHTML = '';
-
-    sousData.forEach(sc => {
-      const li = document.createElement('li');
-      li.className = sc.checked ? 'sc-checked' : 'sc-unchecked';
-      li.innerHTML = (sc.checked ? SVG_CHECK : SVG_CIRCLE) + `<span>${sc.label}</span>`;
-      popupList.appendChild(li);
+// BTS Sous-compétences — dropdown inline
+function btsCellToggle(cell) {
+  const isOpen = cell.classList.contains('open');
+  // Fermer tous les autres dropdowns ouverts dans le même tableau
+  const table = cell.closest('.bts-table');
+  if (table) {
+    table.querySelectorAll('.bts-cell-comp.open').forEach(c => {
+      if (c !== cell) c.classList.remove('open');
     });
-
-    // Position the popup near the cell
-    const rect = cell.getBoundingClientRect();
-    const popupW = 320;
-    const popupH = 50 + sousData.length * 32;
-
-    let left = rect.left + rect.width / 2 - popupW / 2;
-    let top = rect.bottom + 8;
-
-    // Keep within viewport
-    if (left < 8) left = 8;
-    if (left + popupW > window.innerWidth - 8) left = window.innerWidth - popupW - 8;
-    if (top + popupH > window.innerHeight - 8) top = rect.top - popupH - 8;
-
-    popup.style.left = left + 'px';
-    popup.style.top = top + 'px';
-    popup.classList.remove('hidden');
-    requestAnimationFrame(() => popup.classList.add('visible'));
   }
-
-  function hidePopup() {
-    hideTimer = setTimeout(() => {
-      popup.classList.remove('visible');
-      setTimeout(() => {
-        if (!popup.classList.contains('visible')) {
-          popup.classList.add('hidden');
-          activeCell = null;
-        }
-      }, 200);
-    }, 120);
-  }
-
-  // Delegate events on the BTS table
-  document.addEventListener('mouseover', (e) => {
-    const cell = e.target.closest('.bts-cell-comp[data-sous-comps]');
-    if (cell) { showPopup(cell); return; }
-    // If not hovering cell or popup, hide
-    if (!e.target.closest('#bts-sous-popup')) hidePopup();
-  });
-
-  popup.addEventListener('mouseenter', () => clearTimeout(hideTimer));
-  popup.addEventListener('mouseleave', hidePopup);
-
-  // Touch/click for mobile
-  document.addEventListener('click', (e) => {
-    const cell = e.target.closest('.bts-cell-comp[data-sous-comps]');
-    if (cell) {
-      if (activeCell === cell && popup.classList.contains('visible')) {
-        hidePopup();
-      } else {
-        showPopup(cell);
-      }
-      e.stopPropagation();
-      return;
-    }
-    if (!e.target.closest('#bts-sous-popup')) hidePopup();
-  });
-
-  // Hide on scroll/resize
-  document.addEventListener('scroll', hidePopup, true);
-  window.addEventListener('resize', hidePopup);
-}());
+  cell.classList.toggle('open', !isOpen);
+}

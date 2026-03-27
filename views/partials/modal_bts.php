@@ -11,12 +11,6 @@
             <i data-feather="x"></i>
         </button>
         
-        <!-- Popover sous-compétences (injecté par JS) -->
-        <div id="bts-sous-popup" class="bts-sous-popup hidden" role="tooltip" aria-hidden="true">
-            <div id="bts-sous-popup-header" class="bts-sous-popup-header"></div>
-            <ul id="bts-sous-popup-list" class="bts-sous-popup-list"></ul>
-        </div>
-
         <!-- Contenu scrollable -->
         <div class="overflow-y-auto overscroll-contain p-6 md:p-12 h-full rounded-[2rem]" data-lenis-prevent>
             <div class="space-y-16 py-10">
@@ -95,24 +89,33 @@
                                                 <?php foreach ($bts_competences as $comp):
                                                     $hasComp = in_array($comp['id'], $real['competence_ids']);
                                                     $compSous = $bts_sous_competences[$comp['id']] ?? [];
-                                                    $sousData = [];
+                                                    // Uniquement les sous-compétences cochées pour ce projet
+                                                    $checkedSous = [];
                                                     foreach ($compSous as $sc) {
-                                                        $sousData[] = [
-                                                            'id' => $sc['id'],
-                                                            'label' => $sc['label'],
-                                                            'checked' => in_array((string)$sc['id'], array_map('strval', $real['sous_competence_ids']))
-                                                        ];
+                                                        if (in_array((string)$sc['id'], array_map('strval', $real['sous_competence_ids']))) {
+                                                            $checkedSous[] = $sc['label'];
+                                                        }
                                                     }
-                                                    $sousJson = htmlspecialchars(json_encode($sousData, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8');
+                                                    $hasCheckedSous = $hasComp && !empty($checkedSous);
                                                 ?>
-                                                    <td class="text-center p-0 <?php echo ($hasComp && !empty($sousData)) ? 'bts-cell-comp' : ''; ?>"
-                                                        <?php if ($hasComp && !empty($sousData)): ?>
-                                                            data-sous-comps="<?php echo $sousJson; ?>"
-                                                            data-comp-label="<?php echo htmlspecialchars($comp['label'], ENT_QUOTES); ?>"
-                                                        <?php endif; ?>>
+                                                    <td class="bts-cell-td <?php echo $hasCheckedSous ? 'bts-cell-comp' : ''; ?>" onclick="<?php echo $hasCheckedSous ? 'btsCellToggle(this)' : ''; ?>">
                                                         <?php if ($hasComp): ?>
-                                                            <div class="flex items-center justify-center text-blue-600 bts-check-icon">
-                                                                <i data-feather="check" class="w-4 h-4"></i>
+                                                            <div class="bts-cell-inner">
+                                                                <div class="bts-check-row">
+                                                                    <i data-feather="check" class="w-4 h-4 text-blue-600"></i>
+                                                                    <?php if ($hasCheckedSous): ?>
+                                                                        <i data-feather="chevron-down" class="bts-chevron w-3 h-3 text-gray-400"></i>
+                                                                    <?php endif; ?>
+                                                                </div>
+                                                                <?php if ($hasCheckedSous): ?>
+                                                                    <div class="bts-dropdown">
+                                                                        <ul class="bts-dropdown-list">
+                                                                            <?php foreach ($checkedSous as $scLabel): ?>
+                                                                                <li><?php echo htmlspecialchars($scLabel); ?></li>
+                                                                            <?php endforeach; ?>
+                                                                        </ul>
+                                                                    </div>
+                                                                <?php endif; ?>
                                                             </div>
                                                         <?php endif; ?>
                                                     </td>

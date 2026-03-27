@@ -1,25 +1,26 @@
 -- Migration: Ajout des sous-compétences BTS SIO
 -- Exécuter une seule fois sur la base de données existante
 
-USE testfolio_db;
+-- USE testfolio_db; -- Railway: la base s'appelle 'railway'
 
 -- Table des sous-compétences (liées à une compétence principale)
+-- ENGINE=MyISAM pour compatibilité avec la BDD Railway (pas de FK)
 CREATE TABLE IF NOT EXISTS bts_sous_competences (
     id INT AUTO_INCREMENT PRIMARY KEY,
     competence_id INT NOT NULL,
     label VARCHAR(500) NOT NULL,
     display_order INT DEFAULT 0,
-    FOREIGN KEY (competence_id) REFERENCES bts_competences(id) ON DELETE CASCADE
-);
+    INDEX idx_competence_id (competence_id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table de liaison : réalisation ↔ sous-compétence
 CREATE TABLE IF NOT EXISTS bts_matrix_sous (
     realisation_id INT NOT NULL,
     sous_competence_id INT NOT NULL,
     PRIMARY KEY (realisation_id, sous_competence_id),
-    FOREIGN KEY (realisation_id) REFERENCES bts_realisations(id) ON DELETE CASCADE,
-    FOREIGN KEY (sous_competence_id) REFERENCES bts_sous_competences(id) ON DELETE CASCADE
-);
+    INDEX idx_realisation_id (realisation_id),
+    INDEX idx_sous_competence_id (sous_competence_id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insertion des sous-compétences officielles du référentiel BTS SIO
 -- (correspond aux compétences insérées avec display_order 1 à 6)
