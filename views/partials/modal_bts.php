@@ -93,7 +93,10 @@
                                                     $checkedSous = [];
                                                     foreach ($compSous as $sc) {
                                                         if (in_array((string)$sc['id'], array_map('strval', $real['sous_competence_ids']))) {
-                                                            $checkedSous[] = $sc['label'];
+                                                            $checkedSous[] = [
+                                                                'label' => $sc['label'],
+                                                                'justif' => $real['justifications'][$sc['id']] ?? ''
+                                                            ];
                                                         }
                                                     }
                                                     $hasCheckedSous = $hasComp && !empty($checkedSous);
@@ -110,8 +113,13 @@
                                                                 <?php if ($hasCheckedSous): ?>
                                                                     <div class="bts-dropdown">
                                                                         <ul class="bts-dropdown-list">
-                                                                            <?php foreach ($checkedSous as $scLabel): ?>
-                                                                                <li><?php echo htmlspecialchars($scLabel); ?></li>
+                                                                            <?php foreach ($checkedSous as $sc): ?>
+                                                                                <li>
+                                                                                    <span class="bts-sc-label"><?php echo htmlspecialchars($sc['label']); ?></span>
+                                                                                    <?php if (!empty($sc['justif'])): ?>
+                                                                                        <span class="bts-sc-justif"><?php echo htmlspecialchars($sc['justif']); ?></span>
+                                                                                    <?php endif; ?>
+                                                                                </li>
                                                                             <?php endforeach; ?>
                                                                         </ul>
                                                                     </div>

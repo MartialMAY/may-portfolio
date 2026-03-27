@@ -58,6 +58,10 @@
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                        <div class="space-y-4 md:col-span-2">
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400">Description du projet <span class="text-gray-300 normal-case">(contexte, ce qui a été fait)</span></label>
+                            <textarea name="description" rows="3" placeholder="Ex: Application web complète développée seul — architecture MVC PHP, admin sécurisé, déploiement Railway..." class="w-full p-4 bg-gray-50 border border-gray-100 rounded-xl outline-none focus:border-black transition-colors resize-none text-sm"><?php echo htmlspecialchars($realisation['description'] ?? ''); ?></textarea>
+                        </div>
                     </div>
                 </div>
 
@@ -93,16 +97,28 @@
                                         <div class="px-4 py-3 space-y-2">
                                             <p class="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-3">Précisez les sous-compétences développées :</p>
                                             <?php foreach ($compSous as $sc):
-                                                $scChecked = isset($realisation['sous_competence_ids']) && in_array($sc['id'], $realisation['sous_competence_ids']);
+                                                $scChecked  = isset($realisation['sous_competence_ids']) && in_array($sc['id'], $realisation['sous_competence_ids']);
+                                                $scJustif   = $realisation['justifications'][$sc['id']] ?? '';
                                             ?>
-                                                <label class="flex items-start gap-3 p-3 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors group">
-                                                    <input type="checkbox" name="sous_competences[]" value="<?php echo $sc['id']; ?>"
-                                                        <?php echo $scChecked ? 'checked' : ''; ?>
-                                                        class="mt-0.5 w-4 h-4 accent-blue-600 shrink-0">
-                                                    <span class="text-[11px] text-gray-600 group-hover:text-blue-700 transition-colors leading-relaxed">
-                                                        <?php echo htmlspecialchars($sc['label']); ?>
-                                                    </span>
-                                                </label>
+                                                <div class="sc-row rounded-xl border border-transparent hover:border-blue-100 transition-colors <?php echo $scChecked ? 'sc-checked-row' : ''; ?>">
+                                                    <label class="flex items-start gap-3 p-3 cursor-pointer group">
+                                                        <input type="checkbox" name="sous_competences[]" value="<?php echo $sc['id']; ?>"
+                                                            <?php echo $scChecked ? 'checked' : ''; ?>
+                                                            onchange="toggleJustif(this)"
+                                                            class="mt-0.5 w-4 h-4 accent-blue-600 shrink-0">
+                                                        <span class="text-[11px] text-gray-600 group-hover:text-blue-700 transition-colors leading-relaxed font-medium">
+                                                            <?php echo htmlspecialchars($sc['label']); ?>
+                                                        </span>
+                                                    </label>
+                                                    <div class="justif-panel <?php echo $scChecked ? '' : 'hidden'; ?> px-3 pb-3">
+                                                        <textarea
+                                                            name="justifications[<?php echo $sc['id']; ?>]"
+                                                            rows="2"
+                                                            placeholder="Comment as-tu mis en œuvre cette sous-compétence dans ce projet ?"
+                                                            class="w-full p-2.5 text-[11px] bg-blue-50 border border-blue-100 rounded-lg outline-none focus:border-blue-400 transition-colors resize-none text-gray-700"
+                                                        ><?php echo htmlspecialchars($scJustif); ?></textarea>
+                                                    </div>
+                                                </div>
                                             <?php endforeach; ?>
                                         </div>
                                     </div>

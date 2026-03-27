@@ -67,7 +67,7 @@ class AdminController {
                 'display_order' => $_POST['display_order'] ?? 0,
                 'project_id' => $_POST['project_id'] ?? null
             ];
-            if ($btsModel->save($data, $_POST['competences'] ?? [], $_POST['sous_competences'] ?? [])) {
+            if ($btsModel->save($data, $_POST['competences'] ?? [], $_POST['sous_competences'] ?? [], $_POST['justifications'] ?? [])) {
                 $this->logger->log($id ? 'UPDATE_BTS' : 'CREATE_BTS', 'BTS_SIO', "Title: " . $data['title']);
                 \App\Core\ViewHelper::redirect('/admin');
             }

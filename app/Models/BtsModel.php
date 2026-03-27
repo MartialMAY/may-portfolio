@@ -59,8 +59,10 @@ class BtsModel {
         $realisations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($realisations as &$r) {
-            $r['competence_ids'] = $r['competence_ids'] ? explode(',', $r['competence_ids']) : [];
+            $r['competence_ids']     = $r['competence_ids']     ? explode(',', $r['competence_ids'])     : [];
             $r['sous_competence_ids'] = $r['sous_competence_ids'] ? explode(',', $r['sous_competence_ids']) : [];
+            // Charger les justifications [sc_id => justification]
+            $r['justifications'] = $this->getJustifications($r['id']);
         }
 
         return $realisations;
@@ -80,21 +82,37 @@ class BtsModel {
         $stmt->execute();
         $real = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($real) {
-            $real['competence_ids'] = $real['competence_ids'] ? explode(',', $real['competence_ids']) : [];
+            $real['competence_ids']     = $real['competence_ids']     ? explode(',', $real['competence_ids'])     : [];
             $real['sous_competence_ids'] = $real['sous_competence_ids'] ? explode(',', $real['sous_competence_ids']) : [];
+            $real['justifications']     = $this->getJustifications($real['id']);
         }
         return $real;
     }
 
-    public function save($data, $competence_ids = [], $sous_competence_ids = []) {
+    // Retourne [sous_competence_id => justification] pour une réalisation
+    public function getJustifications($realisation_id) {
+        if ($this->conn === null) return [];
+        $query = "SELECT sous_competence_id, justification FROM bts_matrix_sous WHERE realisation_id = :id AND justification IS NOT NULL AND justification != ''";
+        $stmt  = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $realisation_id);
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $map = [];
+        foreach ($rows as $row) {
+            $map[$row['sous_competence_id']] = $row['justification'];
+        }
+        return $map;
+    }
+
+    public function save($data, $competence_ids = [], $sous_competence_ids = [], $justifications = []) {
         if ($this->conn === null) return false;
 
         if (isset($data['id']) && !empty($data['id'])) {
-            $query = "UPDATE bts_realisations SET title = :title, periode = :periode, type = :type, display_order = :display_order, project_id = :project_id WHERE id = :id";
+            $query = "UPDATE bts_realisations SET title = :title, periode = :periode, type = :type, display_order = :display_order, project_id = :project_id, description = :description WHERE id = :id";
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':id', $data['id']);
         } else {
-            $query = "INSERT INTO bts_realisations (title, periode, type, display_order, project_id) VALUES (:title, :periode, :type, :display_order, :project_id)";
+            $query = "INSERT INTO bts_realisations (title, periode, type, display_order, project_id, description) VALUES (:title, :periode, :type, :display_order, :project_id, :description)";
             $stmt = $this->conn->prepare($query);
         }
 
@@ -103,11 +121,12 @@ class BtsModel {
         $stmt->bindParam(':type', $data['type']);
         $stmt->bindParam(':display_order', $data['display_order']);
         $stmt->bindValue(':project_id', !empty($data['project_id']) ? $data['project_id'] : null, PDO::PARAM_INT);
+        $stmt->bindValue(':description', !empty($data['description']) ? $data['description'] : null);
 
         if ($stmt->execute()) {
             $id = isset($data['id']) && !empty($data['id']) ? $data['id'] : $this->conn->lastInsertId();
             $this->syncMatrix($id, $competence_ids);
-            $this->syncMatrixSous($id, $sous_competence_ids);
+            $this->syncMatrixSous($id, $sous_competence_ids, $justifications);
             return true;
         }
         return false;
@@ -139,19 +158,21 @@ class BtsModel {
         return true;
     }
 
-    private function syncMatrixSous($realisation_id, $sous_competence_ids) {
+    private function syncMatrixSous($realisation_id, $sous_competence_ids, $justifications = []) {
         $query = "DELETE FROM bts_matrix_sous WHERE realisation_id = :realisation_id";
-        $stmt = $this->conn->prepare($query);
+        $stmt  = $this->conn->prepare($query);
         $stmt->bindParam(':realisation_id', $realisation_id);
         $stmt->execute();
 
         if (!empty($sous_competence_ids)) {
-            $query = "INSERT INTO bts_matrix_sous (realisation_id, sous_competence_id) VALUES (:realisation_id, :sous_competence_id)";
-            $stmt = $this->conn->prepare($query);
+            $query = "INSERT INTO bts_matrix_sous (realisation_id, sous_competence_id, justification) VALUES (:realisation_id, :sc_id, :justification)";
+            $stmt  = $this->conn->prepare($query);
             foreach ($sous_competence_ids as $sc_id) {
                 if (!empty($sc_id)) {
+                    $justif = $justifications[$sc_id] ?? null;
                     $stmt->bindParam(':realisation_id', $realisation_id);
-                    $stmt->bindParam(':sous_competence_id', $sc_id);
+                    $stmt->bindParam(':sc_id',          $sc_id);
+                    $stmt->bindValue(':justification',  $justif);
                     $stmt->execute();
                 }
             }

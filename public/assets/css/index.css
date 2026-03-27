@@ -527,3 +527,21 @@ body {
   font-size: 13px;
   flex-shrink: 0;
 }
+
+.bts-sc-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e40af;
+  line-height: 1.4;
+}
+
+.bts-sc-justif {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: #6b7280;
+  margin-top: 2px;
+  line-height: 1.4;
+  font-style: italic;
+}
